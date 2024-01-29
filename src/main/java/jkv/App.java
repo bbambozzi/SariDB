@@ -1,5 +1,7 @@
 package jkv;
 
+import jkv.handler.ClientHandler;
+
 /**
  * @author Bautista Bambozzi
  * @since 2023
@@ -7,6 +9,7 @@ package jkv;
  */
 public class App {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        ClientHandler clientHandler = new ClientHandler(1338);
+        clientHandler.handleClients();
     }
 }
