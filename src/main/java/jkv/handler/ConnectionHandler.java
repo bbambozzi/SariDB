@@ -2,6 +2,7 @@ package jkv.handler;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWriter writer) {
@@ -23,8 +24,7 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
 
 
     public void start() throws IOException {
-        System.out.println("stuff..");
-        /* get the socket output contents and print them to stdout */
+        logger.log(Level.INFO, "new client connected! client=" + socket.toString());
         while (socket.isConnected() && !socket.isClosed()) {
             try {
                 if (reader.ready()) {

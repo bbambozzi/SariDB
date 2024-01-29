@@ -20,7 +20,7 @@ public record ClientHandler(int portNumber) {
             logger.log(Level.INFO, "Server starting on port " + portNumber + "..!");
             while (!sv.isClosed()) {
                 Socket socket = sv.accept();
-                new ConnectionHandler(socket).start();
+                new ConnectionHandler(socket).start(); // todo: Multi-thread
             }
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Server shutting down!");
