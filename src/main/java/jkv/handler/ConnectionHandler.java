@@ -15,8 +15,25 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
         );
     }
 
-    public void start() {
+    public void cleanup() throws IOException{
+        if (socket != null) socket.close();
+        if (reader != null) reader.close();
+        if (writer != null) writer.close();
+    }
+
+
+    public void start() throws IOException {
         System.out.println("stuff..");
-        while (reader().)
+        /* get the socket output contents and print them to stdout */
+        while (socket.isConnected() && !socket.isClosed()) {
+            try {
+                if (reader.ready()) {
+                    reader.lines()
+                            .forEach(System.out::println);
+                }
+            } catch (IOException e) {
+                cleanup();
+            }
+        }
     }
 }
