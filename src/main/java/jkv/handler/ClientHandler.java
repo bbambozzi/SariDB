@@ -18,7 +18,7 @@ public record ClientHandler(int portNumber) {
     public void handleClients() {
         try (ServerSocket sv = new ServerSocket(portNumber)) {
             logger.log(Level.INFO, "Server starting on port " + portNumber + "..!");
-            while (true) { // TODO improve this
+            while (!sv.isClosed()) {
                 Socket socket = sv.accept();
                 new ConnectionHandler(socket).start();
             }
