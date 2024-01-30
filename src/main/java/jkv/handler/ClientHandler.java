@@ -20,12 +20,12 @@ public record ClientHandler(int portNumber) {
             logger.log(Level.INFO, "Server starting on port " + portNumber + "..!");
             while (!sv.isClosed()) {
                 Socket socket = sv.accept();
-                var th = Thread.ofVirtual();
-                th.start(new ConnectionHandler(socket));
+                Thread.ofVirtual().start(new ConnectionHandler(socket));
             }
+            logger.log(Level.SEVERE, "Server socket has been closed!");
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Server shutting down!");
-          logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage());
             // todo: log
         }
     }

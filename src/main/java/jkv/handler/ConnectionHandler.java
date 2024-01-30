@@ -5,6 +5,7 @@ import jkv.utils.Instruction;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,11 +21,10 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
     }
 
     private void cleanup() {
-        System.out.println("Started cleanup of client!");
         try {
-            if (socket != null && !socket.isClosed()) socket.close();
             if (reader != null) reader.close();
             if (writer != null) writer.close();
+            if (socket != null) socket.close();
         } catch (Exception ignored) {
         }
     }
@@ -33,23 +33,21 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
         try {
             switch (Instruction.valueOf(command)) {
                 case SET -> {
-                    writer.write("Got a valid instruction: SET\n");
                     if (fval == null || sval == null) {
                         writer.write("ERR: MISSING ARGUMENT\n");
                         break;
                     }
                     InMemoryDatabase.set(fval, sval);
+                    writer.write("OK");
                 }
                 case GET -> {
-                    writer.write("Got a valid instruction: GET\n");
                     if (fval == null) {
                         writer.write("ERR: MISSING ARGUMENT\n");
                     }
                     writer.write(InMemoryDatabase.get(fval) + "\n");
                 }
                 case CMD -> {
-                    writer.write("Got a valid instruction: CMD\n");
-                    switch(fval) {
+                    switch (fval) {
                         case "RESET" -> {
                             InMemoryDatabase.reset();
                             writer.write("RESET OK\n");
@@ -60,7 +58,9 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
                     }
                 }
             }
+            logger.log(Level.INFO, "Received " + command + " " + fval + " " + sval);
             writer.flush();
+            System.out.println("Flushed!");
         } catch (Exception e) {
             try {
                 writer.write("Invalid command received! got=" + command);
@@ -74,18 +74,23 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
 
     @Override
     public void run() {
-        logger.log(Level.INFO, "new client connected! client=" + socket.toString());
+        if (socket == null || socket.isClosed() || !socket.isConnected()) {
+            cleanup();
+            return;
+        }
         try {
-            while (socket.isConnected() && !socket.isClosed()) {
+            while (socket.isConnected() && !socket.isClosed() && reader != null) {
                 if (reader.ready()) {
-                    var line = reader.readLine(); // todo optimize maybe?
+                    var line = reader.readLine();
                     String[] split = line.split("\\s+");
+                    System.out.println("GOT " + Arrays.toString(split));
                     int maxLen = split.length;
                     String cmd = maxLen >= 1 ? split[0] : null;
                     String fval = maxLen >= 2 ? split[1] : null;
                     String sval = maxLen >= 3 ? split[2] : null;
                     handleUserCommand(cmd, fval, sval);
                 }
+                Thread.sleep(50); // todo refactor?
             }
         } catch (Exception e) {
             logger.log(Level.INFO, "failed to readline from client socket! cleaning up..");
