@@ -42,6 +42,9 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
                 }
                 case GET -> {
                     writer.write("Got a valid instruction: GET\n");
+                    if (fval == null) {
+                        writer.write("ERR: MISSING ARGUMENT");
+                    }
                     writer.write(InMemoryDatabase.get(fval) + "\n");
                 }
                 case CMD -> {
