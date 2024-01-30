@@ -4,6 +4,7 @@ import jkv.utils.Instruction;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,8 +26,29 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
         if (writer != null) writer.close();
     }
 
-    private final void handleUserCommand(String command) {
-        switch (command) {
+    private void handleUserCommand(String command) {
+        try {
+            switch(Instruction.valueOf(command)) {
+                case SET -> {
+                    System.out.println("Got a valid instruction: SET");
+                    writer.write("Got a valid instruction: SET");
+                }
+                case GET -> {
+                    System.out.println("Got a valid instruction: GET");
+                    writer.write("Got a valid instruction: CMD");
+                }
+                case CMD -> {
+                    System.out.println("Got a valid instruction: CMD");
+                    writer.write("Got a valid instruction: CMD");
+                }
+            }
+
+        } catch (Exception e) {
+            try {
+                writer.write("Invalid command received! got=" + command);
+            } catch (IOException ex) {
+                logger.log(Level.SEVERE, "Failed to write to client socket!");
+            }
         }
     }
 
@@ -38,7 +60,7 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
         try {
             while (socket.isConnected() && !socket.isClosed()) {
                 if (reader.ready()) {
-                    String line = reader.readLine();
+                    var line = reader.readLine(); // todo optimize maybe?
                     handleUserCommand(line);
                 }
             }

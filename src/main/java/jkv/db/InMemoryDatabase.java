@@ -8,14 +8,14 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public record InMemoryDatabase() {
 
-    private static final ConcurrentHashMap<byte[], byte[]> inMemKVStore = new ConcurrentHashMap<>();
-    private static final byte[] nullResponse = "NULL".getBytes();
+    private static final ConcurrentHashMap<String, String> inMemKVStore = new ConcurrentHashMap<>();
+    private static final String nullResponse = "NULL";
 
-    public static byte[] get(byte[] val) {
+    public static String get(String val) {
         return inMemKVStore.getOrDefault(val, nullResponse);
     }
 
-    public static void set(byte[] key, byte[] value) {
+    public static void set(String key, String value) {
         inMemKVStore.put(key, value);
     }
 }
