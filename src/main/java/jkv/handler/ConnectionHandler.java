@@ -34,6 +34,10 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
             switch (Instruction.valueOf(command)) {
                 case SET -> {
                     writer.write("Got a valid instruction: SET\n");
+                    if (fval == null || sval == null) {
+                        writer.write("ERR: MISSING ARGUMENT");
+                        break;
+                    }
                     InMemoryDatabase.set(fval, sval);
                 }
                 case GET -> {
@@ -45,10 +49,10 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
                     switch(fval) {
                         case "RESET" -> {
                             InMemoryDatabase.reset();
-                            writer.write("RESET OK");
+                            writer.write("RESET OK\n");
                         }
                         case "SIZE" -> {
-                            writer.write(InMemoryDatabase.size());
+                            writer.write(InMemoryDatabase.size() + "\n");
                         }
                     }
                 }
