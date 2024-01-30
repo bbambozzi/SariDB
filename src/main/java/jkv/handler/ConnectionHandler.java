@@ -22,7 +22,6 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
     private void cleanup() {
         System.out.println("Started cleanup of client!");
         try {
-
             if (socket != null && !socket.isClosed()) socket.close();
             if (reader != null) reader.close();
             if (writer != null) writer.close();
@@ -36,19 +35,25 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
                 case SET -> {
                     writer.write("Got a valid instruction: SET\n");
                     InMemoryDatabase.set(fval, sval);
-                    writer.flush();
                 }
                 case GET -> {
                     writer.write("Got a valid instruction: GET\n");
                     writer.write(InMemoryDatabase.get(fval) + "\n");
-                    writer.flush();
                 }
                 case CMD -> {
                     writer.write("Got a valid instruction: CMD\n");
-                    writer.flush();
+                    switch(fval) {
+                        case "RESET" -> {
+                            InMemoryDatabase.reset();
+                            writer.write("RESET OK");
+                        }
+                        case "SIZE" -> {
+                            writer.write(InMemoryDatabase.size());
+                        }
+                    }
                 }
             }
-
+            writer.flush();
         } catch (Exception e) {
             try {
                 writer.write("Invalid command received! got=" + command);
