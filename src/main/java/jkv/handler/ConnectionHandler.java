@@ -35,7 +35,7 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
                 case SET -> {
                     writer.write("Got a valid instruction: SET\n");
                     if (fval == null || sval == null) {
-                        writer.write("ERR: MISSING ARGUMENT");
+                        writer.write("ERR: MISSING ARGUMENT\n");
                         break;
                     }
                     InMemoryDatabase.set(fval, sval);
@@ -43,7 +43,7 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
                 case GET -> {
                     writer.write("Got a valid instruction: GET\n");
                     if (fval == null) {
-                        writer.write("ERR: MISSING ARGUMENT");
+                        writer.write("ERR: MISSING ARGUMENT\n");
                     }
                     writer.write(InMemoryDatabase.get(fval) + "\n");
                 }
