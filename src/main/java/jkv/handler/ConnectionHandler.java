@@ -1,14 +1,14 @@
 package jkv.handler;
 
+import jkv.db.InMemoryDatabase;
 import jkv.utils.Instruction;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWriter writer) {
+public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWriter writer) implements Runnable {
     private static final Logger logger = Logger.getLogger(ConnectionHandler.class.getName());
 
     public ConnectionHandler(Socket socket) throws IOException {
@@ -19,33 +19,40 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
         );
     }
 
-    private final void cleanup() throws IOException {
+    private void cleanup() {
         System.out.println("Started cleanup of client!");
-        if (socket != null) socket.close();
-        if (reader != null) reader.close();
-        if (writer != null) writer.close();
+        try {
+
+            if (socket != null && !socket.isClosed()) socket.close();
+            if (reader != null) reader.close();
+            if (writer != null) writer.close();
+        } catch (Exception ignored) {
+        }
     }
 
-    private void handleUserCommand(String command) {
+    private void handleUserCommand(String command, String fval, String sval) {
         try {
-            switch(Instruction.valueOf(command)) {
+            switch (Instruction.valueOf(command)) {
                 case SET -> {
-                    System.out.println("Got a valid instruction: SET");
-                    writer.write("Got a valid instruction: SET");
+                    writer.write("Got a valid instruction: SET\n");
+                    InMemoryDatabase.set(fval, sval);
+                    writer.flush();
                 }
                 case GET -> {
-                    System.out.println("Got a valid instruction: GET");
-                    writer.write("Got a valid instruction: CMD");
+                    writer.write("Got a valid instruction: GET\n");
+                    writer.write(InMemoryDatabase.get(fval) + "\n");
+                    writer.flush();
                 }
                 case CMD -> {
-                    System.out.println("Got a valid instruction: CMD");
-                    writer.write("Got a valid instruction: CMD");
+                    writer.write("Got a valid instruction: CMD\n");
+                    writer.flush();
                 }
             }
 
         } catch (Exception e) {
             try {
                 writer.write("Invalid command received! got=" + command);
+                writer.flush();
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, "Failed to write to client socket!");
             }
@@ -53,15 +60,19 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
     }
 
 
-
-
-    public void start() throws IOException {
+    @Override
+    public void run() {
         logger.log(Level.INFO, "new client connected! client=" + socket.toString());
         try {
             while (socket.isConnected() && !socket.isClosed()) {
                 if (reader.ready()) {
                     var line = reader.readLine(); // todo optimize maybe?
-                    handleUserCommand(line);
+                    String[] split = line.split("\\s+");
+                    int maxLen = split.length;
+                    String cmd = maxLen >= 1 ? split[0] : null;
+                    String fval = maxLen >= 2 ? split[1] : null;
+                    String sval = maxLen >= 3 ? split[2] : null;
+                    handleUserCommand(cmd, fval, sval);
                 }
             }
         } catch (Exception e) {
