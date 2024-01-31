@@ -39,13 +39,13 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
                         break;
                     }
                     InMemoryDatabase.set(fval, sval);
-                    writer.write("OK");
+                    writer.write("OK\n");
                 }
                 case DEL -> {
                     if (fval == null || sval == null) {
                         writer.write("ERR: MISSING ARGUMENT\n");
                     }
-                    writer.write("OK");
+                    writer.write("OK\n");
                 }
                 case GET -> {
                     if (fval == null) {
@@ -57,7 +57,7 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
                     switch (fval) {
                         case "RESET" -> {
                             InMemoryDatabase.reset();
-                            writer.write("RESET OK\n");
+                            writer.write("OK\n");
                         }
                         case "SIZE" -> {
                             writer.write(InMemoryDatabase.size() + "\n");
