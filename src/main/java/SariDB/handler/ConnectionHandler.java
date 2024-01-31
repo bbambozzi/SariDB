@@ -1,7 +1,7 @@
-package jkv.handler;
+package SariDB.handler;
 
-import jkv.db.InMemoryDatabase;
-import jkv.utils.Instruction;
+import SariDB.db.InMemoryDatabase;
+import SariDB.utils.Instruction;
 
 import java.io.*;
 import java.net.Socket;
