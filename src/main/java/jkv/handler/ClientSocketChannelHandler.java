@@ -12,15 +12,17 @@ public record ClientSocketChannelHandler(SocketChannel socketChannel) implements
             int bytesRead = socketChannel.read(buffer);
 
             if (bytesRead == -1) {
-                // Connection closed by the client
                 socketChannel.close();
+                System.out.println("Closed? maybe?");
             } else if (bytesRead > 0) {
                 buffer.flip();
                 byte[] receivedBytes = new byte[buffer.remaining()];
                 buffer.get(receivedBytes);
                 String receivedData = new String(receivedBytes);
-                System.out.println("Received: " + receivedData);
                 buffer.clear();
+                String response = "RECEIVED";
+                ByteBuffer responseBuffer = ByteBuffer.wrap(response.getBytes());
+                socketChannel.write(responseBuffer);
             }
         } catch (IOException e) {
             e.printStackTrace(); // todo log
@@ -30,7 +32,7 @@ public record ClientSocketChannelHandler(SocketChannel socketChannel) implements
 
     @Override
     public void run() {
-        // todo
         System.out.println("Running..");
+        handleNewDataFromClient();
     }
 }
