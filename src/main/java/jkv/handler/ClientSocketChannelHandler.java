@@ -13,7 +13,6 @@ public record ClientSocketChannelHandler(SocketChannel socketChannel) implements
 
             if (bytesRead == -1) {
                 socketChannel.close();
-                System.out.println("Closed? maybe?");
             } else if (bytesRead > 0) {
                 buffer.flip();
                 byte[] receivedBytes = new byte[buffer.remaining()];
@@ -32,7 +31,6 @@ public record ClientSocketChannelHandler(SocketChannel socketChannel) implements
 
     @Override
     public void run() {
-        System.out.println("Running..");
         handleNewDataFromClient();
     }
 }
