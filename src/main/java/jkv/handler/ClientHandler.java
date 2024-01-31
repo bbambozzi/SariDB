@@ -27,6 +27,7 @@ public record ClientHandler(int portNumber) {
             sv.bind(new InetSocketAddress(1338));
             svSocketChannel.configureBlocking(false);
             logger.log(Level.INFO, "Server starting on port " + portNumber + "..!");
+            Thread.ofVirtual().start(new ServerSelectorHandler(selector)); // start the selector listener
             while (!sv.isClosed()) {
                 SocketChannel socketChannel = svSocketChannel.accept();
                 if (socketChannel != null) {

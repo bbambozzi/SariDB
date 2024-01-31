@@ -2,36 +2,35 @@ package jkv.handler;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
-import java.util.Set;
 
-public record ClientSocketChannelHandler(Selector selector) implements Runnable {
+public record ClientSocketChannelHandler(SocketChannel socketChannel) implements Runnable {
 
-    private void handle() {
+    public void handleNewDataFromClient() {
         try {
-            while (!Thread.interrupted()) {
-                while (selector.select() > 0) {
-                    Set<SelectionKey> keys = selector.selectedKeys();
-                    var iter = keys.iterator();
-                    while (iter.hasNext()) {
-                        var key = iter.next();
-                        if (key.isReadable()) {
-                            // TODO handle this channel!
-                        }
-                        iter.remove();
-                    }
-                }
+            ByteBuffer buffer = ByteBuffer.allocate(1024);
+            int bytesRead = socketChannel.read(buffer);
 
+            if (bytesRead == -1) {
+                // Connection closed by the client
+                socketChannel.close();
+            } else if (bytesRead > 0) {
+                buffer.flip();
+                byte[] receivedBytes = new byte[buffer.remaining()];
+                buffer.get(receivedBytes);
+                String receivedData = new String(receivedBytes);
+                System.out.println("Received: " + receivedData);
+                buffer.clear();
             }
         } catch (IOException e) {
-            // TODO: log
+            e.printStackTrace(); // todo log
         }
     }
 
+
     @Override
     public void run() {
-        handle();
+        // todo
+        System.out.println("Running..");
     }
 }
