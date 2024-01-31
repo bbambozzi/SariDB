@@ -70,8 +70,6 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
             }
         }
     }
-
-
     @Override
     public void run() {
         if (socket == null || socket.isClosed() || !socket.isConnected()) {
