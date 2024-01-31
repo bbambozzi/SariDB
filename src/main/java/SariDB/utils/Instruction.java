@@ -4,4 +4,5 @@ public enum Instruction {
     CMD,
     SET,
     GET,
+    DEL,
 }

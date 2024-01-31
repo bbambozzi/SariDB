@@ -5,10 +5,11 @@ import java.net.Socket;
 import java.util.Random;
 
 public record ClientExample() {
+    private static final Random random = new Random();
     public static void main(String[] args) {
         String serverAddress = "localhost";
         int port = 1338;
-        int amount = 1_000_000;
+        int amount = 10_000_000;
 
         if (args.length >= 3) {
             amount = Integer.parseInt(args[2]);
@@ -19,16 +20,12 @@ public record ClientExample() {
         for (int i = 0; i < amount; i++) {
             Thread.ofVirtual().start(() -> {
                 try (Socket clientSocket = new Socket(serverAddress, port)) {
-                    // Create a socket object
-
-                    // Send data to the server
-                    Random random = new Random();
                     String dataToSend;
-                    int rand = random.nextInt(2);
+                    int rand = random.nextInt(0, 2);
                     if (rand == 0) {
-                        dataToSend = "SET " + random.nextInt(89_000) + 10_000 + " " + random.nextInt(100_000) + 1;
+                        dataToSend = "SET " + random.nextInt(89_000) + 10_000 + " " + random.nextInt(100_000);
                     } else {
-                        dataToSend = "GET " + random.nextInt(89_000) + 10_000 + " " + random.nextInt(100_000) + 1;
+                        dataToSend = "GET " + random.nextInt(89_000) + 10_000 + " " + random.nextInt(100_000);
                     }
 
                     OutputStream outputStream = clientSocket.getOutputStream();

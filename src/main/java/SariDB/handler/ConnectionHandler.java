@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWriter writer) implements Runnable {
     private static final Logger logger = Logger.getLogger(ConnectionHandler.class.getName());
+    private static final String splitByWhitespaceRegex = "\\s+";
 
     public ConnectionHandler(Socket socket) throws IOException {
         this(
@@ -38,6 +39,12 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
                         break;
                     }
                     InMemoryDatabase.set(fval, sval);
+                    writer.write("OK");
+                }
+                case DEL -> {
+                    if (fval == null || sval == null) {
+                        writer.write("ERR: MISSING ARGUMENT\n");
+                    }
                     writer.write("OK");
                 }
                 case GET -> {
@@ -80,7 +87,7 @@ public record ConnectionHandler(Socket socket, BufferedReader reader, BufferedWr
             while (socket.isConnected() && !socket.isClosed() && reader != null) {
                 if (reader.ready()) {
                     var line = reader.readLine();
-                    String[] split = line.split("\\s+");
+                    String[] split = line.split(splitByWhitespaceRegex);
                     System.out.println("GOT " + Arrays.toString(split));
                     int maxLen = split.length;
                     String cmd = maxLen >= 1 ? split[0] : null;

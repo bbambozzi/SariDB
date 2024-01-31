@@ -14,6 +14,9 @@ public record InMemoryDatabase() {
     public static void reset() {
         inMemKVStore.clear();
     }
+    public static void delete(String key) {
+        inMemKVStore.remove(key);
+    }
 
     public static int size() {
         return inMemKVStore.size();
