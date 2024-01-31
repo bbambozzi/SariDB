@@ -34,8 +34,6 @@ public record ClientHandler(int portNumber) {
                     socketChannel.configureBlocking(false);
                     socketChannel.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE); // bitwise shift to accept both
                 }
-                // final Socket socket = sv.accept();
-                // Thread.ofVirtual().start(new ConnectionHandler(socket));
             }
             logger.log(Level.SEVERE, "Server socket has been closed!");
         } catch (Exception e) {
