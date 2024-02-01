@@ -1,9 +1,11 @@
 package client;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,32 +16,36 @@ public record ClientExample() {
     public static void main(String[] args) throws InterruptedException {
         String serverAddress = "localhost";
         int port = 1338;
-        int amount = 100_000;
-        final AtomicInteger total = new AtomicInteger();
+        int amount = 100;
+        var executor = Executors.newVirtualThreadPerTaskExecutor();
 
         System.out.println("Starting " + amount + " sockets");
 
         for (int i = 0; i < amount; i++) {
-            Thread.ofVirtual().start(() -> {
+            executor.submit(() -> {
                 try (Socket clientSocket = new Socket(serverAddress, port)) {
                     String dataToSend;
                     int rand = random.nextInt(0, 2);
-                    if (rand == 0) {
-                        dataToSend = "SET " + random.nextInt(1000) + 10_000 + " " + random.nextInt(100_000);
-                    } else {
-                        dataToSend = "GET " + random.nextInt(89_000) + 10_000 + " " + random.nextInt(100_000);
-                    }
-
                     OutputStream outputStream = clientSocket.getOutputStream();
-                    outputStream.write(dataToSend.getBytes());
-                    outputStream.flush();
+                    InputStream inputStream = clientSocket.getInputStream();
+                    for (int j = 0; j < 10; j++) {
+                        if (rand == 0) {
+                            dataToSend = "SET " + random.nextInt(1000) + 10_000 + " " + random.nextInt(100_000);
+                        } else {
+                            dataToSend = "GET " + random.nextInt(89_000) + 10_000 + " " + random.nextInt(100_000);
+                        }
 
-                    // Receive and print the response
-                    byte[] responseBuffer = new byte[1024];
-                    int bytesRead = clientSocket.getInputStream().read(responseBuffer);
-                    String response = new String(responseBuffer, 0, bytesRead);
+                        outputStream.write(dataToSend.getBytes());
+                        outputStream.flush();
+                        System.out.println("Sent " + dataToSend);
+
+                        // Receive and print the response
+                        byte[] responseBuffer = new byte[1024];
+                        int bytesRead = inputStream.read(responseBuffer);
+                        String response = new String(responseBuffer, 0, bytesRead);
+                        System.out.println(response);
+                    }
                     // System.out.println("Received from server: " + response);
-                    total.getAndAdd(1);
                 } catch (Exception ex) {
                     logger.log(Level.INFO, "FAILURE");
                     ex.printStackTrace();
@@ -48,9 +54,8 @@ public record ClientExample() {
             });
         }
         /* TODO wait until all threads are finished! */
-        Thread.sleep(50000);
-        logger.log(Level.INFO, "Total amount of threads created = " + total);
-        System.out.println(total);
+        executor.awaitTermination(10000, TimeUnit.SECONDS);
+        System.out.println("Finished!");
         logger.log(Level.INFO, "Finished one million connections!");
     }
 

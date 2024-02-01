@@ -17,6 +17,7 @@ public record ServerSelectorHandler(Selector selector) implements Runnable {
                     var iter = keys.iterator();
                     while (iter.hasNext()) {
                         var key = iter.next();
+                        iter.remove();
                         if (key.isValid()) {
                             Thread.ofVirtual().start(new ClientSocketChannelHandler((SocketChannel) key.channel()));
                         }
