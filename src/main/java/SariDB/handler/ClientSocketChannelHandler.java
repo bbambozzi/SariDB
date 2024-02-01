@@ -1,14 +1,20 @@
 package SariDB.handler;
 
-import java.io.IOException;
+import SariDB.command.CommandHandler;
+
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.logging.Logger;
 
 public record ClientSocketChannelHandler(SocketChannel socketChannel) implements Runnable {
+    private static final Logger logger = Logger.getLogger(ClientSocketChannelHandler.class.getName());
 
     public void handleNewDataFromClient() {
         try {
             ByteBuffer buffer = ByteBuffer.allocate(1024);
+            if (socketChannel == null || !socketChannel.isOpen()) {
+                return;
+            }
             int bytesRead = socketChannel.read(buffer);
 
             if (bytesRead == -1) {
@@ -17,14 +23,9 @@ public record ClientSocketChannelHandler(SocketChannel socketChannel) implements
                 buffer.flip();
                 byte[] receivedBytes = new byte[buffer.remaining()];
                 buffer.get(receivedBytes);
-                String receivedData = new String(receivedBytes);
-                buffer.clear();
-                String response = "RECEIVED";
-                ByteBuffer responseBuffer = ByteBuffer.wrap(response.getBytes());
-                socketChannel.write(responseBuffer);
+                Thread.ofVirtual().start(new CommandHandler(socketChannel, receivedBytes));
             }
-        } catch (IOException e) {
-            e.printStackTrace(); // todo log
+        } catch (Exception e) {
         }
     }
 

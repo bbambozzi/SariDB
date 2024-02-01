@@ -26,7 +26,7 @@ public record ClientHandler(int portNumber) {
         ) {
             sv.bind(new InetSocketAddress(1338));
             svSocketChannel.configureBlocking(false);
-            logger.log(Level.INFO, "Server starting on port " + portNumber + "..!");
+            logger.log(Level.INFO, "SariDB Server starting on port " + portNumber + "..!");
             Thread.ofVirtual().start(new ServerSelectorHandler(selector)); // start the selector listener
             while (!sv.isClosed()) {
                 SocketChannel socketChannel = svSocketChannel.accept();
@@ -35,10 +35,9 @@ public record ClientHandler(int portNumber) {
                     socketChannel.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE); // bitwise shift to accept both
                 }
             }
-            logger.log(Level.SEVERE, "Server socket has been closed!");
+            logger.log(Level.SEVERE, "SariDB Server socket has been closed!");
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Server shutting down!");
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, "SariDB Server shutting down!");
         }
     }
 }

@@ -9,7 +9,8 @@ import SariDB.handler.ClientHandler;
  */
 public class App {
     public static void main(String[] args) {
-        ClientHandler clientHandler = new ClientHandler(1338);
+        int portNumber = args.length >= 1 ? Integer.parseInt(args[0]) : 1338;
+        ClientHandler clientHandler = new ClientHandler(portNumber);
         clientHandler.handleClients();
     }
 }
