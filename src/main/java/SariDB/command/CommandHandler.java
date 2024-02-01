@@ -58,7 +58,7 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
                     writeToSocket("OK\n");
                 }
                 case DEL -> {
-                    if (fval == null || sval == null) {
+                    if (fval == null) {
                         writeToSocket("ERR: MISSING ARGUMENT\n");
                     } else {
                         writeToSocket("OK\n");
