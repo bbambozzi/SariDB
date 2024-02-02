@@ -31,9 +31,9 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
     }
 
     /**
-     * This method handles writing to the client socket. It will not do so if the client socket is closed or {@code null}.
+     * This method handles writing to the ClientExample socket. It will not do so if the ClientExample socket is closed or {@code null}.
      *
-     * @param msg The string to be written to the client socket.
+     * @param msg The string to be written to the ClientExample socket.
      * @since 2024
      */
     private void writeToSocket(String msg) {
@@ -44,7 +44,7 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
             }
             socketChannel.write(buf);
         } catch (Exception e) {
-            logger.log(Level.INFO, "Failed to write to client socket!");
+            logger.log(Level.INFO, "Failed to write to ClientExample socket!");
         }
     }
 
@@ -90,7 +90,7 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
         } catch (IllegalArgumentException ignored) {
             System.out.println("CMD=" + command + "FVAL= " + fval + " SVAL=" + sval);
             writeToSocket("ERR: Invalid Command. Try CMD HELP for help\n");
-            logger.log(Level.INFO, "Invalid command received from the client");
+            logger.log(Level.INFO, "Invalid command received from the ClientExample");
         } catch (Exception e) {
             logger.log(Level.INFO, "Got " + command + " " + fval + " " + sval);
         }

@@ -1,4 +1,4 @@
-package client;
+package ClientExample;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -31,7 +31,7 @@ public record ClientExample() {
                     OutputStream outputStream = clientSocket.getOutputStream();
                     InputStream inputStream = clientSocket.getInputStream();
                     String dataToSend;
-                    for (int j = 0; j < 10; j++) {
+                    for (int j = 0; j < 100; j++) {
                         queries.getAndAdd(1);
 
                         int rand = random.nextInt(0, 2);
@@ -65,9 +65,12 @@ public record ClientExample() {
                 }
         );
         Instant end = Instant.now();
+        var timeTaken = Duration.between(start, end).toMillis();
         logger.log(Level.INFO, "Finished " + amount + " connections!");
         logger.log(Level.INFO, "Total queries=" + queries);
-        logger.log(Level.INFO, "Time Taken=" + Duration.between(start, end).toMillis() + " milliseconds.");
+        logger.log(Level.INFO, "Time Taken=" + timeTaken + " milliseconds.");
+        String formattedLog = String.format("TIME=%dms, QUERIES=%s, CONNECTIONS=%d ", timeTaken, queries, amount);
+        logger.log(Level.INFO, formattedLog);
     }
 
 }
