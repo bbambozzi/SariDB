@@ -1,4 +1,4 @@
-package SariDB.utils;
+package SariDB.command.util;
 
 public enum Instruction {
     CMD,

@@ -1,7 +1,8 @@
 package SariDB.command;
 
+import SariDB.command.util.Command;
+import SariDB.command.util.Instruction;
 import SariDB.db.InMemoryDatabase;
-import SariDB.utils.Instruction;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -47,7 +48,7 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
         }
         try {
             switch (Instruction.valueOf(command)) {
-                case SET -> {
+                case Instruction.SET -> {
                     if (sval == null) {
                         writeToSocket("ERR: MISSING ARGUMENT\n");
                         break;
@@ -62,23 +63,22 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
                     writeToSocket(InMemoryDatabase.get(fval) + "\n");
                 }
                 case CMD -> {
-                    switch (fval) {
-                        case "RESET" -> {
+                    switch (Command.valueOf(fval)) {
+                        case RESET -> {
                             InMemoryDatabase.reset();
                             writeToSocket("OK\n");
                         }
-                        case "SIZE" -> {
+                        case SIZE -> {
                             writeToSocket(InMemoryDatabase.size() + "\n");
                         }
                     }
                 }
             }
-        }  catch (IllegalArgumentException ignored) {
-            System.out.println("CMD=" + command + "FVAL= " + fval +" SVAL=" + sval);
+        } catch (IllegalArgumentException ignored) {
+            System.out.println("CMD=" + command + "FVAL= " + fval + " SVAL=" + sval);
             writeToSocket("ERR: Invalid Command. Try CMD HELP for help\n");
             logger.log(Level.INFO, "Invalid command received from the client");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.log(Level.INFO, "Got " + command + " " + fval + " " + sval);
         }
     }
