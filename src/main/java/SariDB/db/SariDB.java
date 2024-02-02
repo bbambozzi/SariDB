@@ -17,6 +17,11 @@ public class SariDB {
     private final boolean isEmbedded;
     private final String filePath;
 
+
+    public final void start() {
+        System.out.println("Starting ..!");
+    }
+
     private SariDB(Builder builder) {
         this.filePath = builder.filePath;
         this.isEmbedded = builder.isEmbedded;
@@ -35,6 +40,7 @@ public class SariDB {
      * Builder class for configuring and creating a SariDB instance.
      */
     public static class Builder {
+        private boolean reconstruct;
         private boolean isEmbedded;
         private String filePath;
 
@@ -66,6 +72,11 @@ public class SariDB {
          */
         public Builder isEmbedded(boolean isEmbedded) {
             this.isEmbedded = isEmbedded;
+            return this;
+        }
+
+        public Builder reconstruct(boolean reconstruct) {
+            this.reconstruct = reconstruct;
             return this;
         }
     }

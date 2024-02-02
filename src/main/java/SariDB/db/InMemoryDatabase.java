@@ -23,7 +23,7 @@ public class InMemoryDatabase {
     /**
      * Thread-safe.
      * Clears the in-memory database.
-     * Does not delete the SariFile.
+     * Does not delete the persistence file.
      */
     public static void reset() {
         inMemKVStore.clear();
