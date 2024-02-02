@@ -6,8 +6,7 @@
 
 ## Overview
 
-SariDB is a sophisticated, file-reconstructible key-value database for Java developers. It seamlessly integrates into both embedded systems and standalone applications, offering unparalleled flexibility and performance.
-The database is designed to be deployed effortlessly, requiring JDK 21 or higher, and it fully endorses the Maven build system.
+SariDB is a sophisticated, file-reconstructible key-value database for your application. It seamlessly integrates into both embedded systems and standalone applications, offering excellent flexibility and performance.
 
 ## Features
 
