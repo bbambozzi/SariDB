@@ -23,7 +23,7 @@ SariDB is a minimalist, file-reconstructible key-value database. It can be embed
 
 ```java
 // Embedded Deployment Example
-import com.example.SariDB.SariDB;
+import com.example.SariDB.db.SariDB;
 
 // Initialize embedded database
 SariDB inMemoryStore = SariDB.builder().embedded(true).build();
