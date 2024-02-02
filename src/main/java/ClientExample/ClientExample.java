@@ -17,6 +17,7 @@ public record ClientExample() {
     private static final Random random = new Random();
     private static final Logger logger = Logger.getLogger(ClientExample.class.getName());
 
+
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         String serverAddress = args.length >= 1 ? args[0] : "localhost";
         int port = 1338;
