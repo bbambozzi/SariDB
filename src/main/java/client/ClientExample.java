@@ -20,7 +20,7 @@ public record ClientExample() {
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         String serverAddress = args.length >= 1 ? args[0] : "localhost";
         int port = 1338;
-        int amount = 100;
+        int amount = 50;
         AtomicInteger queries = new AtomicInteger();
         System.out.println("Starting " + amount + " sockets");
         List<Thread> threads = new ArrayList<>();

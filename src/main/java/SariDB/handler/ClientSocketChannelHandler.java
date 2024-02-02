@@ -14,6 +14,19 @@ import java.util.logging.Logger;
 public record ClientSocketChannelHandler(SocketChannel socketChannel) implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientSocketChannelHandler.class.getName());
 
+    /**
+     * Handles incoming data from the client using non-blocking I/O with a Selector.
+     * This method continuously monitors the Selector for readable events on the associated
+     * {@code socketChannel}. It reads data into a ByteBuffer, launches a new thread for
+     * processing the received data using the {@link CommandHandler}, and clears the buffer
+     * for the next read. The method uses non-blocking I/O with a Selector to efficiently
+     * handle multiple channels in a single thread.
+     * <p>
+     * Note: This method configures the {@code socketChannel} for non-blocking mode,
+     * and it handles channel registration for both read and write events.
+     * The method closes the channel if the end of the stream is reached or an exception occurs.
+     * </p>
+     */
     public void handleNewDataFromClient() {
         ByteBuffer buffer = ByteBuffer.allocate(1024);
         try {

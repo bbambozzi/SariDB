@@ -30,10 +30,16 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
 
     }
 
+    /**
+     * This method handles writing to the client socket. It will not do so if the client socket is closed or {@code null}.
+     *
+     * @param msg The string to be written to the client socket.
+     * @since 2024
+     */
     private void writeToSocket(String msg) {
         try {
             ByteBuffer buf = stringToResponseBuffer(msg);
-            if (!socketChannel.isOpen()) {
+            if (socketChannel == null || !socketChannel.isOpen()) {
                 return;
             }
             socketChannel.write(buf);
@@ -42,6 +48,13 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
         }
     }
 
+    /**
+     * @param command Must be a String representation of a {@link Command}.
+     * @param fval    Must be a {@code String}, or in the case of a {@link Command} a valid string representation
+     *                of an {@link Instruction}. Must never be {@code null}
+     * @param sval    Sets the value to be stored for the case of a SET {@link Command}
+     * @since 2024
+     */
     private void handleUserCommand(String command, String fval, String sval) {
         if (command == null || fval == null) {
             return;
