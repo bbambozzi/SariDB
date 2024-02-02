@@ -6,7 +6,9 @@
 
 ## Overview
 
-SariDB is a sophisticated, file-reconstructible key-value database for your application. It seamlessly integrates into both embedded systems and standalone applications, offering excellent flexibility and performance.
+## Overview
+
+SariDB is a minimalist, file-reconstructible key-value database. It can be embedded directly within your application or deployed as a standalone solution, providing excellent flexibility and performance.
 
 ## Features
 
