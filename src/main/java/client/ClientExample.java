@@ -19,7 +19,7 @@ public record ClientExample() {
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         String serverAddress = "localhost";
         int port = 1338;
-        int amount = 10_000;
+        int amount = 100;
         var executor = Executors.newVirtualThreadPerTaskExecutor();
 
         System.out.println("Starting " + amount + " sockets");
@@ -44,6 +44,7 @@ public record ClientExample() {
                     // Receive and print the response
                     byte[] responseBuffer = new byte[1024];
                     int bytesRead = inputStream.read(responseBuffer);
+                    System.out.println("Response = " + new String(responseBuffer));
                 } catch (Exception ex) {
                     logger.log(Level.INFO, "FAILURE");
                     logger.log(Level.INFO, ex.getMessage());

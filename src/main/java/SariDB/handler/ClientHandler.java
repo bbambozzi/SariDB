@@ -38,6 +38,7 @@ public record ClientHandler(int portNumber) {
             logger.log(Level.SEVERE, "SariDB Server socket has been closed!");
         } catch (Exception e) {
             logger.log(Level.SEVERE, "SariDB Server shutting down!");
+            logger.log(Level.SEVERE, e.getMessage());
         }
     }
 }

@@ -42,32 +42,23 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
     }
 
     private void handleUserCommand(String command, String fval, String sval) {
+        if (command == null || fval == null) {
+            return;
+        }
         try {
-            if (!socketChannel.isConnected()) {
-                return;
-            }
-
             switch (Instruction.valueOf(command)) {
                 case SET -> {
-                    if (fval == null || sval == null) {
+                    if (sval == null) {
                         writeToSocket("ERR: MISSING ARGUMENT\n");
-                        System.out.println("Set received");
                         break;
                     }
                     InMemoryDatabase.set(fval, sval);
                     writeToSocket("OK\n");
                 }
                 case DEL -> {
-                    if (fval == null) {
-                        writeToSocket("ERR: MISSING ARGUMENT\n");
-                    } else {
-                        writeToSocket("OK\n");
-                    }
+                    writeToSocket("OK\n");
                 }
                 case GET -> {
-                    if (fval == null) {
-                        writeToSocket("ERR: MISSING ARGUMENT\n");
-                    }
                     writeToSocket(InMemoryDatabase.get(fval) + "\n");
                 }
                 case CMD -> {
@@ -82,7 +73,12 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
                     }
                 }
             }
-        } catch (Exception e) {
+        }  catch (IllegalArgumentException ignored) {
+            System.out.println("CMD=" + command + "FVAL= " + fval +" SVAL=" + sval);
+            writeToSocket("ERR: Invalid Command. Try CMD HELP for help\n");
+            logger.log(Level.INFO, "Invalid command received from the client");
+        }
+        catch (Exception e) {
             logger.log(Level.INFO, "Got " + command + " " + fval + " " + sval);
         }
     }

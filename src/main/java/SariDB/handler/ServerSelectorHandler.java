@@ -16,15 +16,17 @@ public record ServerSelectorHandler(Selector selector) implements Runnable {
                     Set<SelectionKey> keys = selector.selectedKeys();
                     var iter = keys.iterator();
                     while (iter.hasNext()) {
+                        System.out.println("New key!");
                         var key = iter.next();
                         iter.remove();
                         if (key.isValid()) {
                             Thread.ofVirtual().start(new ClientSocketChannelHandler((SocketChannel) key.channel()));
                         }
+                        key.cancel();
                     }
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Server selector handler failed");
         }
     }
