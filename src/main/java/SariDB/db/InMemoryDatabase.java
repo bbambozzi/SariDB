@@ -1,6 +1,8 @@
 package SariDB.db;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Represents the in-memory Key-Value database.
@@ -13,9 +15,15 @@ import java.util.concurrent.ConcurrentHashMap;
 public class InMemoryDatabase {
 
     private static final ConcurrentHashMap<String, String> inMemKVStore = new ConcurrentHashMap<>();
+    private static final Lock loadFromFileLock = new ReentrantLock();
+
     private static final String nullResponse = "NULL";
 
     private InMemoryDatabase() {
+    }
+
+    public static ConcurrentHashMap<String, String> cloneInMemKV() {
+        return new ConcurrentHashMap<String, String>(inMemKVStore);
     }
 
     /**
