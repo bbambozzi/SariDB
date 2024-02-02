@@ -44,17 +44,14 @@ public record ClientSocketChannelHandler(SocketChannel socketChannel) implements
                             buffer.flip(); // Reset position to zero
                             byte[] receivedBytes = new byte[buffer.remaining()];
                             buffer.get(receivedBytes);
-                            System.out.println("Started new CommandHandler!");
                             Thread.ofVirtual().start(new CommandHandler(socketChannel, receivedBytes));
                             buffer.clear(); // Clear the buffer for the next read
                         }
                     }
                 }
             }
-
             // If bytesRead is -1, the end of the stream is reached
             socketChannel.close();
-            System.out.println("Closed SocketChannel");
         } catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage());
         }

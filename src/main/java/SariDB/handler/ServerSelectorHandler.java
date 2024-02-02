@@ -16,7 +16,6 @@ public record ServerSelectorHandler(Selector selector) implements Runnable {
                     Set<SelectionKey> keys = selector.selectedKeys();
                     var iter = keys.iterator();
                     while (iter.hasNext()) {
-                        System.out.println("New key!");
                         var key = iter.next();
                         iter.remove();
                         if (key.isValid()) {

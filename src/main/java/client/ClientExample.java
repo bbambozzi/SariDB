@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,14 +18,14 @@ public record ClientExample() {
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         String serverAddress = "localhost";
         int port = 1338;
-        int amount = 100;
+        int amount = 300;
         var executor = Executors.newVirtualThreadPerTaskExecutor();
 
         System.out.println("Starting " + amount + " sockets");
 
-        List<Future<?>> futures = new ArrayList<>();
+        List<Thread> threads = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
-            futures.add(executor.submit(() -> {
+            threads.add(Thread.ofVirtual().start(() -> {
                 try (Socket clientSocket = new Socket(serverAddress, port)) {
                     String dataToSend;
                     int rand = random.nextInt(0, 2);
@@ -44,24 +43,23 @@ public record ClientExample() {
                     // Receive and print the response
                     byte[] responseBuffer = new byte[1024];
                     int bytesRead = inputStream.read(responseBuffer);
-                    System.out.println("Response = " + new String(responseBuffer));
+                    // System.out.println("Response = " + new String(responseBuffer));
                 } catch (Exception ex) {
                     logger.log(Level.INFO, "FAILURE");
                     logger.log(Level.INFO, ex.getMessage());
                 }
             }));
         }
-        /* TODO wait until all threads are finished! */
-        futures
-                .stream()
-                .parallel()
-                .forEach(elem -> {
+        threads.forEach(
+                th -> {
                     try {
-                        elem.get();
-                    } catch (Exception ignored) {
-                        System.out.println("Failure getting thread value");
+                        th.join();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
                     }
-                });
+                }
+        );
+        /* TODO wait until all threads are finished! */
         logger.log(Level.INFO, "Finished " + amount + " connections!");
         executor.close();
     }
