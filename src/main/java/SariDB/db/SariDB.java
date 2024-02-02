@@ -1,26 +1,22 @@
 package SariDB.db;
 
-import SariDB.handler.ClientHandler;
+import java.util.Objects;
 
 /**
  * @author Bautista Bambozzi
  * @version 0.1
+ * @see SariDB.Builder
  * @since 2024
  * <h3>A lightweight, concurrent key-value database that can be embedded or deployed standalone.</h3>
  * <p>Can be instantiated via the {@code SariDB.builder()} method.</p>
  * Represents a SariDB instance that can be configured using the Builder pattern.
  * This class allows creating a SariDB object with specified properties such as
  * the file path and whether it is embedded.
- * @see SariDB.Builder
  */
 public class SariDB {
     private final boolean isEmbedded;
     private final String filePath;
 
-
-    public final void start() {
-        System.out.println("Starting ..!");
-    }
 
     private SariDB(Builder builder) {
         this.filePath = builder.filePath;
@@ -34,6 +30,26 @@ public class SariDB {
      */
     public static Builder builder() {
         return new Builder();
+    }
+
+    public final void start() {
+        System.out.println("Starting ..!");
+    }
+
+    public String get(String key) {
+        String k = Objects.requireNonNullElseGet(key, () -> "NULL");
+        return InMemoryDatabase.get(k);
+    }
+
+    public final void set(String key, String value) {
+        String k = Objects.requireNonNullElseGet(key, () -> "NULL");
+        String v = Objects.requireNonNullElseGet(value, () -> "NULL");
+        InMemoryDatabase.set(key, value);
+    }
+
+    public final void delete(String key) {
+        String k = Objects.requireNonNullElseGet(key, () -> "NULL");
+        InMemoryDatabase.delete(k);
     }
 
     /**

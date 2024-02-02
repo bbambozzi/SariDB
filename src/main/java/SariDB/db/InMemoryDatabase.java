@@ -8,8 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * <p>
  * NOTE: All of the methods in this class are thread-safe.
  * Do not try to create an instance of this class; call the static methods instead.
- * A bug currently exists in the JDK whereas a Virtual {@link Thread} can pin and deadlock under specific circumstances.
- * We will continue to use them, awaiting the bugfix.
  * </p>
  */
 public class InMemoryDatabase {
