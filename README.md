@@ -6,8 +6,6 @@
 
 ## Overview
 
-## Overview
-
 SariDB is a minimalist, file-reconstructible key-value database. It can be embedded directly within your application or deployed as a standalone solution, providing excellent flexibility and performance.
 
 ## Features
