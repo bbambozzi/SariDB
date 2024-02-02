@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * More functionality, like persistence, will be added in future releases.
  * <p>
  * NOTE: All of the methods in this class are thread-safe.
- * You should not try to create an instance of this class. Call the static methods instead.
+ * Do not try to create an instance of this class; call the static methods instead.
  * A bug currently exists in the JDK whereas a Virtual {@link Thread} can pin and deadlock under specific circumstances.
  * We will continue to use them, awaiting the bugfix.
  * </p>
