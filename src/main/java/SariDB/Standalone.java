@@ -3,13 +3,17 @@ package SariDB;
 import SariDB.db.SariDB;
 
 public class Standalone {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         SariDB sariDB = SariDB
                 .builder()
                 .isEmbedded(false) // Embedded or standalone?
-                .filePath("here.parquet") // Save your .parquet wherever!
-                .reconstruct(false) // Reconstruct or start anew?
+                .filePath("pleasework.parquet") // Save your .parquet wherever!
+                .reconstruct(true) // Reconstruct or start anew?
                 .build(); // That's all folks.
         sariDB.start(); // 🚀
+        while (sariDB.isOnline()) {
+            System.out.println(sariDB.get("5"));
+            Thread.sleep(1000);
+        }
     }
 }

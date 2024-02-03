@@ -30,8 +30,8 @@ public class SariDB {
 
     private void rebuild() {
         if (reconstruct) {
-            ConcurrentHashMap<String, String> newDb = new ConcurrentHashMap<>(); // TODO
-            InMemoryDatabase.swapFor(newDb);
+            ConcurrentHashMap<String, String> db = persistenceHandler.readFromFile();
+            InMemoryDatabase.swapFor(db);
         }
     }
     public boolean isOnline() {

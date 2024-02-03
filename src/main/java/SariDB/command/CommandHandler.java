@@ -3,10 +3,11 @@ package SariDB.command;
 import SariDB.command.util.Command;
 import SariDB.command.util.Instruction;
 import SariDB.db.InMemoryDatabase;
+import SariDB.db.PersistenceHandler;
+import org.apache.hadoop.fs.Path;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -85,6 +86,14 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
                         }
                         case SIZE -> {
                             writeToSocket(InMemoryDatabase.size() + "\n");
+                        }
+                        case SAVE -> {
+                            if (sval == null) {
+                                throw new IllegalArgumentException("Expected a valid path");
+                            }
+                            var pers = new PersistenceHandler(new Path(sval + ".parquet"));
+                            pers.writeToFile(InMemoryDatabase.cloneInMemKV());
+                            writeToSocket("OK\n");
                         }
                     }
                 }
