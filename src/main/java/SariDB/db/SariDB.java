@@ -29,7 +29,10 @@ public class SariDB {
      * @return A new instance of the SariDB Builder.
      */
     public static Builder builder() {
-        return new Builder();
+        return new Builder()
+                .isEmbedded(true)
+                .reconstruct(false)
+                .filePath("db.parquet");
     }
 
     public final void start() {
@@ -37,18 +40,18 @@ public class SariDB {
     }
 
     public String get(String key) {
-        String k = Objects.requireNonNullElseGet(key, () -> "NULL");
+        String k = Objects.requireNonNullElseGet(key, () -> "null");
         return InMemoryDatabase.get(k);
     }
 
     public final void set(String key, String value) {
-        String k = Objects.requireNonNullElseGet(key, () -> "NULL");
-        String v = Objects.requireNonNullElseGet(value, () -> "NULL");
-        InMemoryDatabase.set(key, value);
+        String k = Objects.requireNonNullElseGet(key, () -> "null");
+        String v = Objects.requireNonNullElseGet(value, () -> "null");
+        InMemoryDatabase.set(k, v);
     }
 
     public final void delete(String key) {
-        String k = Objects.requireNonNullElseGet(key, () -> "NULL");
+        String k = Objects.requireNonNullElseGet(key, () -> "null");
         InMemoryDatabase.delete(k);
     }
 
@@ -91,6 +94,12 @@ public class SariDB {
             return this;
         }
 
+        /**
+         * Sets whether the SariDB instance being built should reconstruct itself
+         *
+         * @param reconstruct True if the SariDB should reconstruct itself, false otherwise.
+         * @return The Builder instance for method chaining.
+         */
         public Builder reconstruct(boolean reconstruct) {
             this.reconstruct = reconstruct;
             return this;

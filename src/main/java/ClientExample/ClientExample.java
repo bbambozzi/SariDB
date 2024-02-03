@@ -70,8 +70,7 @@ public record ClientExample() {
         logger.log(Level.INFO, "Finished " + amount + " connections!");
         logger.log(Level.INFO, "Total queries=" + queries);
         logger.log(Level.INFO, "Time Taken=" + timeTaken + " milliseconds.");
-        String formattedLog = String.format("TIME=%dms, QUERIES=%s, CONNECTIONS=%d ", timeTaken, queries, amount);
-        logger.log(Level.INFO, formattedLog);
+        logger.log(Level.INFO, String.format("TIME=%dms, QUERIES=%s, CONNECTIONS=%d ", timeTaken, queries, amount));
     }
 
 }

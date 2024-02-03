@@ -17,13 +17,17 @@ public class InMemoryDatabase {
     private static final ConcurrentHashMap<String, String> inMemKVStore = new ConcurrentHashMap<>();
     private static final Lock loadFromFileLock = new ReentrantLock();
 
-    private static final String nullResponse = "NULL";
+    private static final String nullResponse = "null";
 
+    /**
+     * Private method to prevent instantiation
+     */
     private InMemoryDatabase() {
     }
 
+
     public static ConcurrentHashMap<String, String> cloneInMemKV() {
-        return new ConcurrentHashMap<String, String>(inMemKVStore);
+        return new ConcurrentHashMap<>(inMemKVStore);
     }
 
     /**
