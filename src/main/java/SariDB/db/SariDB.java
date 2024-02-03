@@ -42,7 +42,10 @@ public class SariDB {
     }
 
     public final void start() {
-        System.out.println("Starting ..!");
+        logger.log(Level.INFO, "Starting SariDB " + (isEmbedded ? " in embedded mode" : " in standalone mode"));
+        if (!isEmbedded) {
+            // create sv TODO
+        }
     }
 
     public String get(String key) {
