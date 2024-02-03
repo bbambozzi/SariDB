@@ -69,7 +69,7 @@ public record PersistanceHandler(Path path) {
                 .build();
     }
 
-    public void main(String[] args) {
+    public static void main(String[] args) {
         // Example usage
         Map<String, String> data = Map.of("key1", "value1", "key2", "value2");
 
