@@ -16,15 +16,15 @@ import java.util.logging.Logger;
  * @author Bautista Bambozzi
  * @since 2024
  */
-public record ClientHandler(int portNumber) {
+public record ClientHandler(int portNumber) implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
 
-    public void handleClients() {
+    public void run() {
         try (ServerSocketChannel svSocketChannel = ServerSocketChannel.open();
              Selector selector = Selector.open();
              ServerSocket sv = svSocketChannel.socket();
         ) {
-            sv.bind(new InetSocketAddress(1338));
+            sv.bind(new InetSocketAddress(portNumber));
             svSocketChannel.configureBlocking(false);
             logger.log(Level.INFO, "SariDB Server starting on port " + portNumber + "..!");
             Thread.ofVirtual().start(new ServerSelectorHandler(selector)); // start the selector listener
@@ -41,4 +41,5 @@ public record ClientHandler(int portNumber) {
             logger.log(Level.SEVERE, e.getMessage());
         }
     }
+
 }

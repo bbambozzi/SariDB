@@ -1,5 +1,7 @@
 package SariDB.db;
 
+import SariDB.handler.ClientHandler;
+import SariDB.handler.ServerSelectorHandler;
 import org.apache.hadoop.fs.Path;
 
 import java.io.IOException;
@@ -24,6 +26,7 @@ public class SariDB {
     private final PersistenceHandler persistenceHandler;
     private final Logger logger = Logger.getLogger(SariDB.class.getName());
     private final boolean reconstruct;
+    private final int portNumber;
 
     private void rebuild() {
         if (reconstruct) {
@@ -36,6 +39,7 @@ public class SariDB {
     private SariDB(Builder builder) {
         this.isEmbedded = builder.isEmbedded;
         this.reconstruct = builder.reconstruct;
+        this.portNumber = builder.portNumber;
         this.persistenceHandler = new PersistenceHandler(new Path(builder.filePath));
     }
 
@@ -48,6 +52,7 @@ public class SariDB {
         return new Builder()
                 .isEmbedded(true)
                 .reconstruct(false)
+                .portNumber(1338)
                 .filePath("db.parquet");
     }
 
@@ -57,7 +62,9 @@ public class SariDB {
             rebuild();
         }
         if (!isEmbedded) {
-            // create sv TODO
+            Thread.ofVirtual().start(
+                    new ClientHandler(portNumber)
+            );
         }
     }
 
@@ -92,6 +99,7 @@ public class SariDB {
         private boolean reconstruct;
         private boolean isEmbedded;
         private String filePath;
+        private int portNumber;
 
         /**
          * Builds and returns the SariDB instance with the configured properties.
@@ -100,6 +108,11 @@ public class SariDB {
          */
         public SariDB build() {
             return new SariDB(this);
+        }
+
+        public Builder portNumber(int portNumber) {
+            this.portNumber = portNumber;
+            return this;
         }
 
         /**
