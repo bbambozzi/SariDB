@@ -39,7 +39,7 @@ public record PersistenceHandler(Path path) {
         return "{\"type\":\"record\",\"name\":\"KeyValue\",\"fields\":[{\"name\":\"key\",\"type\":\"string\"},{\"name\":\"value\",\"type\":\"string\"}]}";
     }
 
-    public ConcurrentHashMap<String, String> readFromParquetFile(Path parquetFilePath) {
+    public ConcurrentHashMap<String, String> readFromFile() {
         ConcurrentHashMap<String, String> dataMap = new ConcurrentHashMap<>();
         try {
             ParquetReader<GenericRecord> parquetReader = getParquetReader();
@@ -48,7 +48,7 @@ public record PersistenceHandler(Path path) {
                 dataMap.put(record.get("key").toString(), record.get("value").toString());
             }
         } catch (IOException ignored) {
-            logger.log(Level.SEVERE, "Failed to read file!");
+            logger.log(Level.SEVERE, "Failed reconstruction- could not read DB file!");
         }
         return dataMap;
     }
