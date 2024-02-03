@@ -22,15 +22,12 @@ public record PersistanceHandler(Path path) {
     private static final Configuration CONF = new Configuration();
 
     private static MessageType getMessageType() {
-        // Define the schema for the Parquet file
         return MessageTypeParser.parseMessageType(
                 "message KeyValue { required binary key (UTF8); required binary value (UTF8); }"
         );
     }
 
-    private static GenericRecord getRecord(String key, String value) {
-        // Create a GenericRecord using Avro
-
+    private static GenericRecord createRecord(String key, String value) {
         GenericRecord rec = new GenericData.Record(SCHEMA);
         rec.put("key", key);
         rec.put("value", value);
@@ -42,6 +39,16 @@ public record PersistanceHandler(Path path) {
         return "{\"type\":\"record\",\"name\":\"KeyValue\",\"fields\":[{\"name\":\"key\",\"type\":\"string\"},{\"name\":\"value\",\"type\":\"string\"}]}";
     }
 
+    public static void main(String[] args) {
+        // Example usage
+        Map<String, String> data = Map.of("key1", "value1", "key2", "value2");
+        try {
+            new PersistanceHandler(new Path("here.parquet")).writeToFile(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void writeToFile(Map<String, String> map) throws IOException {
         // Define the Parquet schema
         MessageType schema = getMessageType();
@@ -51,7 +58,7 @@ public record PersistanceHandler(Path path) {
         try (ParquetWriter<GenericRecord> writer = getParquetWriter()) {
             // Write data to the Parquet file
             for (Map.Entry<String, String> entry : map.entrySet()) {
-                writer.write(getRecord(entry.getKey(), entry.getValue())); // required Void got GenericRecord
+                writer.write(createRecord(entry.getKey(), entry.getValue())); // required Void got GenericRecord
             }
         }
     }
@@ -67,16 +74,5 @@ public record PersistanceHandler(Path path) {
                 .withSchema(SCHEMA) //
                 .withCompressionCodec(codec)
                 .build();
-    }
-
-    public static void main(String[] args) {
-        // Example usage
-        Map<String, String> data = Map.of("key1", "value1", "key2", "value2");
-
-        try {
-            new PersistanceHandler(new Path("here.parquet")).writeToFile(data);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

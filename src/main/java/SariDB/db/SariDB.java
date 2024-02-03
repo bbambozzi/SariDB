@@ -1,6 +1,11 @@
 package SariDB.db;
 
+import org.apache.hadoop.fs.Path;
+
+import java.io.IOException;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Bautista Bambozzi
@@ -15,12 +20,13 @@ import java.util.Objects;
  */
 public class SariDB {
     private final boolean isEmbedded;
-    private final String filePath;
+    private final PersistanceHandler persistanceHandler;
+    private final Logger logger = Logger.getLogger(SariDB.class.getName());
 
 
     private SariDB(Builder builder) {
-        this.filePath = builder.filePath;
         this.isEmbedded = builder.isEmbedded;
+        this.persistanceHandler = new PersistanceHandler(new Path(builder.filePath));
     }
 
     /**
@@ -53,6 +59,14 @@ public class SariDB {
     public final void delete(String key) {
         String k = Objects.requireNonNullElseGet(key, () -> "null");
         InMemoryDatabase.delete(k);
+    }
+
+    public final void save() {
+        try {
+            this.persistanceHandler.writeToFile(InMemoryDatabase.cloneInMemKV());
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Failed to save persistence file!");
+        }
     }
 
     /**
