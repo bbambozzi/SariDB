@@ -112,7 +112,6 @@ public class SariDB {
         public SariDB build() {
             return new SariDB(this);
         }
-
         public Builder portNumber(int portNumber) {
             this.portNumber = portNumber;
             return this;
