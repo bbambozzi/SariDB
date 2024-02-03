@@ -34,6 +34,9 @@ public class SariDB {
             InMemoryDatabase.swapFor(newDb);
         }
     }
+    public boolean isOnline() {
+        return !this.isEmbedded;
+    }
 
 
     private SariDB(Builder builder) {
