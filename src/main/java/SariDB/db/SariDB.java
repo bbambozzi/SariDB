@@ -4,6 +4,7 @@ import org.apache.hadoop.fs.Path;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,10 +23,19 @@ public class SariDB {
     private final boolean isEmbedded;
     private final PersistenceHandler persistenceHandler;
     private final Logger logger = Logger.getLogger(SariDB.class.getName());
+    private final boolean reconstruct;
+
+    private void rebuild() {
+        if (reconstruct) {
+            ConcurrentHashMap<String, String> newDb = new ConcurrentHashMap<>(); // TODO
+            InMemoryDatabase.swapFor(newDb);
+        }
+    }
 
 
     private SariDB(Builder builder) {
         this.isEmbedded = builder.isEmbedded;
+        this.reconstruct = builder.reconstruct;
         this.persistenceHandler = new PersistenceHandler(new Path(builder.filePath));
     }
 
@@ -43,6 +53,9 @@ public class SariDB {
 
     public final void start() {
         logger.log(Level.INFO, "Starting SariDB " + (isEmbedded ? " in embedded mode" : " in standalone mode"));
+        if (reconstruct) {
+            rebuild();
+        }
         if (!isEmbedded) {
             // create sv TODO
         }

@@ -1,8 +1,6 @@
 package SariDB.db;
 
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Represents the in-memory Key-Value database.
@@ -12,9 +10,9 @@ import java.util.concurrent.locks.ReentrantLock;
  * Do not try to create an instance of this class; call the static methods instead.
  * </p>
  */
-public class InMemoryDatabase {
+ public class InMemoryDatabase {
 
-    private static final ConcurrentHashMap<String, String> inMemKVStore = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<String, String> inMemKVStore = new ConcurrentHashMap<>();
     private static final String nullResponse = "null";
 
     /**
@@ -23,6 +21,9 @@ public class InMemoryDatabase {
     private InMemoryDatabase() {
     }
 
+    public static void swapFor(ConcurrentHashMap<String, String> newDB) {
+        inMemKVStore = newDB;
+    }
 
     public static ConcurrentHashMap<String, String> cloneInMemKV() {
         return new ConcurrentHashMap<>(inMemKVStore);

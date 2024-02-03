@@ -6,6 +6,7 @@ import SariDB.db.InMemoryDatabase;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,6 +17,7 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
     private static ByteBuffer stringToResponseBuffer(String string) {
         return ByteBuffer.wrap(string.getBytes());
     }
+
 
     public void handleReceivedBytes() {
         try {
@@ -88,11 +90,9 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
                 }
             }
         } catch (IllegalArgumentException ignored) {
-            System.out.println("CMD=" + command + "FVAL= " + fval + " SVAL=" + sval);
+            logger.log(Level.INFO, "Invalid command received. CMD=" + command + "FVAL= " + fval + " SVAL=" + sval);
             writeToSocket("ERR: Invalid Command. Try CMD HELP for help\n");
-            logger.log(Level.INFO, "Invalid command received from the ClientExample");
-        } catch (Exception e) {
-            logger.log(Level.INFO, "Got " + command + " " + fval + " " + sval);
+        } catch (Exception ignored) {
         }
     }
 
