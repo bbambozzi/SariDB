@@ -20,13 +20,13 @@ import java.util.logging.Logger;
  */
 public class SariDB {
     private final boolean isEmbedded;
-    private final PersistanceHandler persistanceHandler;
+    private final PersistenceHandler persistenceHandler;
     private final Logger logger = Logger.getLogger(SariDB.class.getName());
 
 
     private SariDB(Builder builder) {
         this.isEmbedded = builder.isEmbedded;
-        this.persistanceHandler = new PersistanceHandler(new Path(builder.filePath));
+        this.persistenceHandler = new PersistenceHandler(new Path(builder.filePath));
     }
 
     /**
@@ -66,7 +66,7 @@ public class SariDB {
 
     public final void save() {
         try {
-            this.persistanceHandler.writeToFile(InMemoryDatabase.cloneInMemKV());
+            this.persistenceHandler.writeToFile(InMemoryDatabase.cloneInMemKV());
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Failed to save persistence file!");
         }

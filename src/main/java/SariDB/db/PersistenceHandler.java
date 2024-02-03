@@ -10,22 +10,14 @@ import org.apache.parquet.hadoop.ParquetWriter;
 import org.apache.parquet.hadoop.metadata.CompressionCodecName;
 import org.apache.parquet.hadoop.util.HadoopOutputFile;
 import org.apache.parquet.io.OutputFile;
-import org.apache.parquet.schema.MessageType;
-import org.apache.parquet.schema.MessageTypeParser;
 
 import java.io.IOException;
 import java.util.Map;
 
-public record PersistanceHandler(Path path) {
+public record PersistenceHandler(Path path) {
 
     private static final Schema SCHEMA = new Schema.Parser().parse("{\"type\":\"record\",\"name\":\"KeyValue\",\"fields\":[{\"name\":\"key\",\"type\":\"string\"},{\"name\":\"value\",\"type\":\"string\"}]}");
     private static final Configuration CONF = new Configuration();
-
-    private static MessageType getMessageType() {
-        return MessageTypeParser.parseMessageType(
-                "message KeyValue { required binary key (UTF8); required binary value (UTF8); }"
-        );
-    }
 
     private static GenericRecord createRecord(String key, String value) {
         GenericRecord rec = new GenericData.Record(SCHEMA);
@@ -40,11 +32,6 @@ public record PersistanceHandler(Path path) {
     }
 
     public void writeToFile(Map<String, String> map) throws IOException {
-        // Define the Parquet schema
-        MessageType schema = getMessageType();
-
-        // Configure ParquetWriter
-
         try (ParquetWriter<GenericRecord> writer = getParquetWriter()) {
             // Write data to the Parquet file
             for (Map.Entry<String, String> entry : map.entrySet()) {
