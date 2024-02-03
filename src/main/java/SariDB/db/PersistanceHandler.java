@@ -39,16 +39,6 @@ public record PersistanceHandler(Path path) {
         return "{\"type\":\"record\",\"name\":\"KeyValue\",\"fields\":[{\"name\":\"key\",\"type\":\"string\"},{\"name\":\"value\",\"type\":\"string\"}]}";
     }
 
-    public static void main(String[] args) {
-        // Example usage
-        Map<String, String> data = Map.of("key1", "value1", "key2", "value2");
-        try {
-            new PersistanceHandler(new Path("here.parquet")).writeToFile(data);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void writeToFile(Map<String, String> map) throws IOException {
         // Define the Parquet schema
         MessageType schema = getMessageType();
