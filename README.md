@@ -22,28 +22,13 @@ SariDB is a minimalist, file-reconstructible key-value database. It can be embed
 (Subject to change)
 
 ```java
-// Embedded Deployment Example
-import com.example.SariDB.db.SariDB;
-
-// Initialize embedded database
-SariDB inMemoryStore = SariDB.builder().embedded(true).build();
-
-// Store key-value pair
-inMemoryStore.put("key1", "value1");
-
-// Retrieve value by key
-String value = .get("key1");
-System.out.println(value); // Output: value1
-
-// Initialize standalone database
-SariDB standaloneDB = SariDB.builder().embedded(false).filePath("db.parquet").build();
-
-// Store key-value pair
-standaloneDB.put("key2", "value2");
-
-// Retrieve value by key
-String value = standaloneDB.get("key2");
-System.out.println(value); // Output: value2
+SariDB sariDB = SariDB
+                .builder()
+                .isEmbedded(true) // Embedded or standalone?
+                .filePath("path/to/db.parquet") // Save your .parquet wherever!
+                .reconstruct(false) // Reconstruct or start anew?
+                .build(); // That's all folks.
+sariDB.start(); // 🚀
 ```
 
 
