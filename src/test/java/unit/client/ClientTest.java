@@ -25,5 +25,11 @@ public class ClientTest {
             String x = client.sendSetRequest("one", "one");
             assertEquals(x, "OK");
         }
+
+        @Test
+        public void shouldGetNullValuesCorrectly() throws Exception {
+            String x = client.sendGetRequest("IDONTEXIST");
+            assertEquals(x, "null");
+        }
     }
 }
