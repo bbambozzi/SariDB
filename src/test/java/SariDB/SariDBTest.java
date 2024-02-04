@@ -117,5 +117,10 @@ public class SariDBTest {
             String val = sariDB.get("IDONTEXIST123");
             assertEquals(val, "null");
         }
+
+        @Test
+        public void continuesToBeEmbeddedAfterReconstruction() {
+            assertTrue(sariDB.isEmbedded());
+        }
     }
 }
