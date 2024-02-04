@@ -1,7 +1,6 @@
 package SariDB.db;
 
 import SariDB.handler.ClientHandler;
-import SariDB.handler.ServerSelectorHandler;
 import org.apache.hadoop.fs.Path;
 
 import java.io.IOException;
@@ -34,7 +33,7 @@ public class SariDB {
             InMemoryDatabase.swapFor(db);
         }
     }
-    public boolean isOnline() {
+    public boolean isEmbedded() {
         return !this.isEmbedded;
     }
 

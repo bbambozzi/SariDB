@@ -11,7 +11,7 @@ public class Standalone {
                 .reconstruct(true) // Reconstruct or start anew?
                 .build(); // That's all folks.
         sariDB.start(); // 🚀
-        while (sariDB.isOnline()) {
+        while (sariDB.isEmbedded()) {
             System.out.println(sariDB.get("5"));
             Thread.sleep(1000);
         }
