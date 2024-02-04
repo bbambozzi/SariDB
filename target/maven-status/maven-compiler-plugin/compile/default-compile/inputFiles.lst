@@ -1,8 +1,9 @@
 /home/jbb/Documents/Projects/SariDB/src/main/java/SariDB/command/util/Command.java
+/home/jbb/Documents/Projects/SariDB/src/main/java/client/SariDBClient.java
 /home/jbb/Documents/Projects/SariDB/src/main/java/SariDB/handler/ClientHandler.java
 /home/jbb/Documents/Projects/SariDB/src/main/java/SariDB/db/PersistenceHandler.java
 /home/jbb/Documents/Projects/SariDB/src/main/java/SariDB/db/InMemoryDatabase.java
-/home/jbb/Documents/Projects/SariDB/src/main/java/ClientExample/ClientExample.java
+/home/jbb/Documents/Projects/SariDB/src/main/java/client/example/ClientExample.java
 /home/jbb/Documents/Projects/SariDB/src/main/java/SariDB/Standalone.java
 /home/jbb/Documents/Projects/SariDB/src/main/java/SariDB/handler/ClientSocketChannelHandler.java
 /home/jbb/Documents/Projects/SariDB/src/main/java/SariDB/command/CommandHandler.java

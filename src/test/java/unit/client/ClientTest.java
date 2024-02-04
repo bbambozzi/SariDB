@@ -4,9 +4,10 @@ import client.SariDBClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.Socket;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ClientTest {
     @Nested
@@ -22,14 +23,25 @@ public class ClientTest {
 
         @Test
         public void shouldSetCorrectly() throws Exception {
-            String x = client.sendSetRequest("one", "one");
-            assertEquals(x, "OK");
+            String answer = client.sendSetRequest("one", "one");
+            assertEquals(answer, "OK");
         }
 
         @Test
         public void shouldGetNullValuesCorrectly() throws Exception {
-            String x = client.sendGetRequest("IDONTEXIST");
-            assertEquals(x, "null");
+            String answer = client.sendGetRequest("IDONTEXIST");
+            assertEquals("null", answer);
+        }
+
+
+        @Test
+        public void shouldSetAndGetValuesCorrectly() throws Exception {
+            String setValue = "testingValue";
+            String setKey = "testingkey";
+            String okResponse = client.sendSetRequest(setKey, setValue);
+            String getResponse = client.sendGetRequest(setKey);
+            assertEquals(okResponse, "OK");
+            assertEquals(getResponse, setValue);
         }
     }
 }
