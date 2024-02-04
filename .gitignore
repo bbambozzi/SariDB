@@ -4,5 +4,5 @@
 .idea*
 .*.parquet
 *.parquet
-!*.testing.parquet
+!*testing.parquet
 .target/*
