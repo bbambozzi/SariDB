@@ -119,6 +119,18 @@ public class SariDBTest {
         }
 
         @Test
+        public void canStillChangeRecordsFromMemoryAfterReconstruction() {
+            sariDB.set("5", "NOTFIVE");
+            assertEquals(sariDB.get("5"), "NOTFIVE");
+        }
+
+        @Test
+        public void canStillRemoveRecordsFromMemoryAfterReconstruction() {
+            sariDB.delete("5");
+            assertEquals(sariDB.get("5"), "null");
+        }
+
+        @Test
         public void continuesToBeEmbeddedAfterReconstruction() {
             assertTrue(sariDB.isEmbedded());
         }
