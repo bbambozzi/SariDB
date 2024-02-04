@@ -14,7 +14,7 @@ SariDB is a minimalist, file-reconstructible key-value database. It can be embed
 
 - **File-based Reconstruction:** Ensure data persistence and quick recovery with SariDB's file-based reconstruction feature built on Apache Parquet, making it robust against unexpected shutdowns.
 
-- **Efficient Key-Value Storage:** 
+- **Efficient Key-Value Storage:** Uses efficient hashing to guarantee constant-time reads and is thread-safe out of the box, no configuration needed.
 
 - **Concurrency First:** SariDB provides built-in concurrency safety mechanisms, allowing multiple threads to operate on the database simultaneously without compromising data consistency.
 
