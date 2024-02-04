@@ -17,4 +17,11 @@ public record SariDBClient(InputStream inputStream, OutputStream outputStream) {
             return new String(responseBuffer);
     }
 
+    public String sendGetRequest(String valueToGet) throws IOException {
+        outputStream.write(("GET" + valueToGet).getBytes());
+        outputStream.flush();
+        byte[] responseBuffer = new byte[1024];
+        inputStream.read(responseBuffer);
+        return new String(responseBuffer);
+    }
 }
