@@ -91,11 +91,12 @@ public class SariDBTest {
     }
 
     @Nested
-    @DisplayName("Should reconstruct itself properly")
+    @DisplayName("When using SariDB on embedded mode")
     public class SariDBReconstruction {
         SariDB sariDB;
 
         @BeforeEach
+        @DisplayName("Should set up correctly")
         public void setUp() {
             this.sariDB = SariDB
                     .builder()
@@ -106,6 +107,7 @@ public class SariDBTest {
         }
 
         @Test
+        @DisplayName("Reads already-stored values after reconstruction correctly")
         public void readsValuesCorrectly() {
             String val = sariDB.get("5");
             System.out.println("getting saridb stuff");
@@ -113,24 +115,28 @@ public class SariDBTest {
         }
 
         @Test
+        @DisplayName("Returns null on non-existing values after reconstruction")
         public void returnNullOnNonExistingValuesAfterReconstruction() {
             String val = sariDB.get("IDONTEXIST123");
             assertEquals(val, "null");
         }
 
         @Test
+        @DisplayName("Can still change records that have previously been reconstructed from disk")
         public void canStillChangeRecordsFromMemoryAfterReconstruction() {
             sariDB.set("5", "NOTFIVE");
             assertEquals(sariDB.get("5"), "NOTFIVE");
         }
 
         @Test
+        @DisplayName("Can still delete records that have been previously reconstructed from disk")
         public void canStillRemoveRecordsFromMemoryAfterReconstruction() {
             sariDB.delete("5");
             assertEquals(sariDB.get("5"), "null");
         }
 
         @Test
+        @DisplayName("Correctly identifies itself as embedded after reconstruction")
         public void continuesToBeEmbeddedAfterReconstruction() {
             assertTrue(sariDB.isEmbedded());
         }
