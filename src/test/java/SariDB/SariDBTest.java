@@ -106,11 +106,6 @@ public class SariDBTest {
         }
 
         @Test
-        public void reconstructsWithoutError() {
-            assertTrue(true);
-        }
-
-        @Test
         public void readsValuesCorrectly() {
             String val = sariDB.get("5");
             System.out.println("getting saridb stuff");
