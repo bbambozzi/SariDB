@@ -1,11 +1,8 @@
-package ClientExample;
-
-import com.jcraft.jsch.IO;
+package client;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public record SariDBClient(InputStream inputStream, OutputStream outputStream) {

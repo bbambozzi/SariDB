@@ -15,7 +15,7 @@ public record ClientSocketChannelHandler(SocketChannel socketChannel) implements
     private static final Logger logger = Logger.getLogger(ClientSocketChannelHandler.class.getName());
 
     /**
-     * Handles incoming data from the ClientExample using non-blocking I/O with a Selector.
+     * Handles incoming data from the client using non-blocking I/O with a Selector.
      * This method continuously monitors the Selector for readable events on the associated
      * {@code socketChannel}. It reads data into a ByteBuffer, launches a new thread for
      * processing the received data using the {@link CommandHandler}, and clears the buffer

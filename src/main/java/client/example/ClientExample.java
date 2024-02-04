@@ -1,20 +1,18 @@
-package ClientExample;
+package client.example;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import client.SariDBClient;
+
 import java.net.Socket;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public record ClientExample() {
-    private static final Random random = new Random();
     private static final Logger logger = Logger.getLogger(ClientExample.class.getName());
 
 

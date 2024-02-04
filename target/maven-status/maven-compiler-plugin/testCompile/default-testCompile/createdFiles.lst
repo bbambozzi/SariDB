@@ -1,3 +1,7 @@
-SariDB/SariDBTest.class
-SariDB/SariDBTest$SariDBInteractions.class
-SariDB/SariDBTest$SariDBReconstruction.class
+unit/client/ClientTest.class
+unit/SariDB/SariDBStandaloneTest.class
+unit/SariDB/SariDBEmbeddedTest$SariDBEmbeddedInteractions.class
+unit/SariDB/SariDBEmbeddedTest$SariDBReconstruction.class
+integration/SariDBStandaloneAndClient.class
+unit/SariDB/SariDBStandaloneTest$SariDBStandaloneInteractions.class
+unit/SariDB/SariDBEmbeddedTest.class
