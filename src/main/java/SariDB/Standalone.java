@@ -7,13 +7,13 @@ public class Standalone {
         SariDB sariDB = SariDB
                 .builder()
                 .isEmbedded(false) // Embedded or standalone?
-                .filePath("pleasework.parquet") // Save your .parquet wherever!
+                .filePath("src/test/resources/testing.parquet") // Save your .parquet wherever!
                 .reconstruct(true) // Reconstruct or start anew?
                 .build(); // That's all folks.
         sariDB.start(); // 🚀
-        while (sariDB.isEmbedded()) {
+        while (!sariDB.isEmbedded()) {
             System.out.println(sariDB.get("5"));
-            Thread.sleep(1000);
+            Thread.sleep(3000);
         }
     }
 }

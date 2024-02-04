@@ -45,7 +45,7 @@ public class SariDBTest {
     }
 
     @Nested
-    @DisplayName("When using SariDB on embedded mode")
+    @DisplayName("When using SariDB on embedded mode without reconstruction")
     class SariDBInteractions {
         SariDB sariDB;
 
@@ -54,6 +54,7 @@ public class SariDBTest {
             this.sariDB = SariDB
                     .builder()
                     .isEmbedded(true)
+                    .reconstruct(false)
                     .build();
         }
 
@@ -83,8 +84,43 @@ public class SariDBTest {
             sariDB.set(k, v);
             sariDB.get(v);
             assertEquals(sariDB.get("key"), "null");
+            assertEquals(sariDB.get(k), v);
+            sariDB.delete(k);
+            assertEquals(sariDB.get(k), "null");
         }
     }
 
+    @Nested
+    @DisplayName("Should reconstruct itself properly")
+    public class SariDBReconstruction {
+        SariDB sariDB;
 
+        @BeforeEach
+        public void setUp() {
+            this.sariDB = SariDB
+                    .builder()
+                    .filePath("src/test/resources/testing.parquet")
+                    .isEmbedded(true)
+                    .reconstruct(true)
+                    .build();
+        }
+
+        @Test
+        public void reconstructsWithoutError() {
+            assertTrue(true);
+        }
+
+        @Test
+        public void readsValuesCorrectly() {
+            String val = sariDB.get("5");
+            System.out.println("getting saridb stuff");
+            assertEquals("FIVE", val); // This value is hardcoded in the testing.parquet file.
+        }
+
+        @Test
+        public void returnNullOnNonExistingValuesAfterReconstruction() {
+            String val = sariDB.get("IDONTEXIST123");
+            assertEquals(val, "null");
+        }
+    }
 }

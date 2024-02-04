@@ -34,7 +34,7 @@ public class SariDB {
         }
     }
     public boolean isEmbedded() {
-        return !this.isEmbedded;
+        return this.isEmbedded;
     }
 
 
@@ -43,6 +43,9 @@ public class SariDB {
         this.reconstruct = builder.reconstruct;
         this.portNumber = builder.portNumber;
         this.persistenceHandler = new PersistenceHandler(new Path(builder.filePath));
+        if (reconstruct) {
+            rebuild();
+        }
     }
 
     /**
