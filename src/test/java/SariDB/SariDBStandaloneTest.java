@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 public class SariDBStandaloneTest {
 
     @Test
+    @DisplayName("SariDB standalone correctly identifies as standalone.")
     public void standaloneSariDBIdentifiesAsSuch() {
         SariDB db = SariDB
                 .builder()
