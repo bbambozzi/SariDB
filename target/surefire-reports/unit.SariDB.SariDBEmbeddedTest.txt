@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: unit.SariDB.SariDBEmbeddedTest
 -------------------------------------------------------------------------------
-Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.1 s - in unit.SariDB.SariDBEmbeddedTest
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.124 s - in unit.SariDB.SariDBEmbeddedTest

@@ -24,7 +24,7 @@ public class ClientTest {
         @Test
         public void shouldSetCorrectly() throws Exception {
             String answer = client.sendSetRequest("one", "one");
-            assertEquals(answer, "OK");
+            assertEquals("OK", answer);
         }
 
         @Test
@@ -40,7 +40,7 @@ public class ClientTest {
             String setKey = "testingkey";
             String okResponse = client.sendSetRequest(setKey, setValue);
             String getResponse = client.sendGetRequest(setKey);
-            assertEquals(okResponse, "OK");
+            assertEquals("OK", okResponse);
             assertEquals(getResponse, setValue);
         }
     }
