@@ -1,9 +1,0 @@
-unit/client/ClientTest.class
-unit/SariDB/SariDBStandaloneTest.class
-integration/SariDBAndClient/SariDBWithClient$ClientQueriesStandaloneSariDB.class
-unit/client/ClientTest$clientTestInitsCorrectly.class
-integration/SariDBAndClient/SariDBWithClient.class
-unit/SariDB/SariDBEmbeddedTest$SariDBEmbeddedInteractions.class
-unit/SariDB/SariDBEmbeddedTest$SariDBReconstruction.class
-unit/SariDB/SariDBStandaloneTest$SariDBStandaloneInteractions.class
-unit/SariDB/SariDBEmbeddedTest.class

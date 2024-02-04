@@ -4,3 +4,4 @@
 .idea*
 .*.parquet
 *.parquet
+!*.testing.parquet
