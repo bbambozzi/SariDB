@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Unit test for simple App.
  */
-public class SariDBTest {
+public class SariDBEmbeddedTest {
     /**
      * Rigorous Test :-)
      */
@@ -91,7 +91,7 @@ public class SariDBTest {
     }
 
     @Nested
-    @DisplayName("When using SariDB on embedded mode")
+    @DisplayName("When using SariDB on embedded mode and reconstruction enabled")
     public class SariDBReconstruction {
         SariDB sariDB;
 
