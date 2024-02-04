@@ -46,7 +46,7 @@ public class SariDBEmbeddedTest {
 
     @Nested
     @DisplayName("When using SariDB on embedded mode without reconstruction")
-    class SariDBInteractions {
+    class SariDBEmbeddedInteractions {
         SariDB sariDB;
 
         @BeforeEach

@@ -2,7 +2,9 @@ package SariDB;
 
 
 import SariDB.db.SariDB;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -29,5 +31,20 @@ public class SariDBStandaloneTest {
                 .build();
         assertFalse(db.isEmbedded());
         assertInstanceOf(SariDB.class, db);
+
+
+    }
+    @Nested
+    public class SariDBStandaloneInteractions {
+        private SariDB db;
+
+        @BeforeEach
+        public void init() {
+            db = SariDB
+                    .builder()
+                    .isEmbedded(false)
+                    .reconstruct(false)
+                    .build();
+        }
     }
 }
