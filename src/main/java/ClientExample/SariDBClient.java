@@ -1,5 +1,7 @@
 package ClientExample;
 
+import com.jcraft.jsch.IO;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -19,6 +21,14 @@ public record SariDBClient(InputStream inputStream, OutputStream outputStream) {
 
     public String sendGetRequest(String valueToGet) throws IOException {
         outputStream.write(("GET" + valueToGet).getBytes());
+        outputStream.flush();
+        byte[] responseBuffer = new byte[1024];
+        inputStream.read(responseBuffer);
+        return new String(responseBuffer);
+    }
+
+    public String sendDelRequest(String valueToDel) throws IOException {
+        outputStream.write(("DEL " + valueToDel).getBytes());
         outputStream.flush();
         byte[] responseBuffer = new byte[1024];
         inputStream.read(responseBuffer);
