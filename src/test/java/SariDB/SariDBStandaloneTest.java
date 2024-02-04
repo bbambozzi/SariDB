@@ -2,8 +2,11 @@ package SariDB;
 
 
 import SariDB.db.SariDB;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class SariDBStandaloneTest {
 
@@ -16,7 +19,9 @@ public class SariDBStandaloneTest {
         assertFalse(db.isEmbedded());
     }
 
-    @Test void SariDBInstanceIsCreatedWithBuilderCorrectly() {
+    @DisplayName("SariDB instance is of the correct type after using the builder")
+    @Test
+    void SariDBInstanceIsCreatedWithBuilderCorrectly() {
         SariDB db = SariDB
                 .builder()
                 .isEmbedded(false)
@@ -24,5 +29,4 @@ public class SariDBStandaloneTest {
         assertFalse(db.isEmbedded());
         assertInstanceOf(SariDB.class, db);
     }
-    @Test
 }
