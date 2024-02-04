@@ -21,16 +21,15 @@ public record ClientExample() {
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         String serverAddress = args.length >= 1 ? args[0] : "localhost";
         int port = 1338;
-        int amount = 50;
+        int amount = 1;
         AtomicInteger queries = new AtomicInteger();
         System.out.println("Starting " + amount + " sockets");
         List<Thread> threads = new ArrayList<>();
         Instant start = Instant.now();
         for (int i = 0; i < amount; i++) {
-            threads.add(Thread.ofVirtual().start(() -> {
+            threads.add(Thread.ofPlatform().start(() -> {
                 try (Socket clientSocket = new Socket(serverAddress, port)) {
                     SariDBClient sariDBClient = new SariDBClient(clientSocket.getInputStream(), clientSocket.getOutputStream());
-                    sariDBClient.sendSetRequest("5")
                 } catch (Exception ex) {
                     logger.log(Level.INFO, ex.getMessage());
                 }
