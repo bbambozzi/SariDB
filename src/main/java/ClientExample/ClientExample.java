@@ -29,29 +29,9 @@ public record ClientExample() {
         for (int i = 0; i < amount; i++) {
             threads.add(Thread.ofVirtual().start(() -> {
                 try (Socket clientSocket = new Socket(serverAddress, port)) {
-                    OutputStream outputStream = clientSocket.getOutputStream();
-                    InputStream inputStream = clientSocket.getInputStream();
-                    String dataToSend;
-                    for (int j = 0; j < 100; j++) {
-                        queries.getAndAdd(1);
-
-                        int rand = random.nextInt(0, 2);
-                        if (rand == 0) {
-                            dataToSend = "SET " + random.nextInt(1000) + 10_000 + " " + random.nextInt(100_000);
-                        } else {
-                            dataToSend = "GET " + random.nextInt(1000) + 10_000 + " " + random.nextInt(100_000);
-                        }
-
-                        outputStream.write(dataToSend.getBytes());
-                        outputStream.flush();
-
-                        // Receive and print the response
-                        byte[] responseBuffer = new byte[1024];
-                        int bytesRead = inputStream.read(responseBuffer);
-                        // System.out.println("Response = " + new String(responseBuffer));
-                    }
+                    SariDBClient sariDBClient = new SariDBClient(clientSocket.getInputStream(), clientSocket.getOutputStream());
+                    sariDBClient.sendSetRequest("5")
                 } catch (Exception ex) {
-                    logger.log(Level.INFO, "FAILURE");
                     logger.log(Level.INFO, ex.getMessage());
                 }
             }));

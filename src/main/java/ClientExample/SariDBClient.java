@@ -11,8 +11,8 @@ import java.util.logging.Logger;
 public record SariDBClient(InputStream inputStream, OutputStream outputStream) {
     public static final Logger logger = Logger.getLogger(SariDBClient.class.getName());
 
-    public String sendSetRequest(String valueToSend) throws IOException {
-            outputStream.write(("SET " + valueToSend).getBytes());
+    public String sendSetRequest(String key, String value) throws IOException {
+            outputStream.write(("SET " + key + " " + value).getBytes());
             outputStream.flush();
             byte[] responseBuffer = new byte[1024];
             inputStream.read(responseBuffer);
