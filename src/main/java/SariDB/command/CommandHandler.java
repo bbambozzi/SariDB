@@ -91,12 +91,17 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
                             if (sval == null) {
                                 throw new IllegalArgumentException("Expected a valid path");
                             }
-                            var pers = new PersistenceHandler(new Path(sval + ".parquet"));
-                            pers.writeToFile(InMemoryDatabase.cloneInMemKV());
+                            var persistenceHandler = new PersistenceHandler(new Path(sval + ".parquet"));
+                            persistenceHandler.writeToFile(InMemoryDatabase.cloneInMemKV());
                             writeToSocket("OK\n");
                         }
                         case HELP -> {
-
+                            writeToSocket("""
+                                    SET (key) (value) Sets key and value to the in-memory database.
+                                    GET (key) gets the key from the in-memory database. Returns "null" on non-existent key
+                                    DEL (key) deletes the key from the in-memory database.
+                                    
+                                    """);
                         }
                     }
                 }
