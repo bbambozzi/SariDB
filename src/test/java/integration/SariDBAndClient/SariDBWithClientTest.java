@@ -10,7 +10,7 @@ import java.net.Socket;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SariDBWithClient {
+public class SariDBWithClientTest {
     @Nested
     @DisplayName("When a SariDB client connects to a standalone SariDB instance")
     public class ClientQueriesStandaloneSariDB {
