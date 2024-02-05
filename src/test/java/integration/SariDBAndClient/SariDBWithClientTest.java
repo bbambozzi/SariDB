@@ -1,5 +1,6 @@
 package integration.SariDBAndClient;
 
+import SariDB.db.SariDB;
 import client.SariDBClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,14 +17,21 @@ public class SariDBWithClientTest {
     public class ClientQueriesStandaloneSariDB {
         SariDBClient client;
         private Socket socket;
+        private SariDB sariDB;
 
         @BeforeEach
         @DisplayName("Sets up correctly")
-        public void setUp() throws Exception {
+        public void setup() throws Exception {
+            sariDB = SariDB
+                    .builder()
+                    .isEmbedded(false)
+                    .reconstruct(false)
+                    .portNumber(1338)
+                    .build();
+            sariDB.start();
             this.socket = new Socket("localhost", 1338);
             this.client = new SariDBClient(socket.getInputStream(), socket.getOutputStream());
         }
-
         @Test
         @DisplayName("SET commands are registered correctly")
         public void shouldSetCorrectly() throws Exception {

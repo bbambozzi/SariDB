@@ -50,6 +50,7 @@ public class SariDBEmbeddedTest {
         SariDB sariDB;
 
         @BeforeEach
+        @DisplayName("Sets up correctly")
         public void setUp() {
             this.sariDB = SariDB
                     .builder()
