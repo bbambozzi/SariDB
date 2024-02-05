@@ -1,6 +1,6 @@
 package SariDB.command;
 
-import SariDB.command.util.Command;
+import SariDB.command.util.CMDCommand;
 import SariDB.command.util.Instruction;
 import SariDB.db.InMemoryDatabase;
 import SariDB.db.PersistenceHandler;
@@ -52,10 +52,10 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
     }
 
     /**
-     * @param command Must be a String representation of a {@link Command}.
-     * @param fval    Must be a {@code String}, or in the case of a {@link Command} a valid string representation
+     * @param command Must be a String representation of a {@link CMDCommand}.
+     * @param fval    Must be a {@code String}, or in the case of a {@link CMDCommand} a valid string representation
      *                of an {@link Instruction}. Must never be {@code null}
-     * @param sval    Sets the value to be stored for the case of a SET {@link Command}
+     * @param sval    Sets the value to be stored for the case of a SET {@link CMDCommand}
      * @since 2024
      */
     private void handleUserCommand(String command, String fval, String sval) {
@@ -79,7 +79,7 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
                     writeToSocket(InMemoryDatabase.get(fval) + "\n");
                 }
                 case CMD -> {
-                    switch (Command.valueOf(fval)) {
+                    switch (CMDCommand.valueOf(fval)) {
                         case RESET -> {
                             InMemoryDatabase.reset();
                             writeToSocket("OK\n");
@@ -94,6 +94,9 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
                             var pers = new PersistenceHandler(new Path(sval + ".parquet"));
                             pers.writeToFile(InMemoryDatabase.cloneInMemKV());
                             writeToSocket("OK\n");
+                        }
+                        case HELP -> {
+
                         }
                     }
                 }
