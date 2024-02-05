@@ -29,6 +29,7 @@ public class SariDBWithClientTest {
                     .portNumber(1338)
                     .build();
             sariDB.start();
+            Thread.sleep(100);
             this.socket = new Socket("localhost", 1338);
             this.client = new SariDBClient(socket.getInputStream(), socket.getOutputStream());
         }

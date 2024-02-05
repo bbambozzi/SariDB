@@ -7,7 +7,7 @@ public class Standalone {
         SariDB sariDB = SariDB
                 .builder()
                 .isEmbedded(false) // Embedded or standalone?
-                .filePath("src/test/resources/testing.parquet") // Save your .parquet wherever!
+                .filePath("mydb.parquet")
                 .reconstruct(true) // Reconstruct or start anew?
                 .build(); // That's all folks.
         sariDB.start(); // 🚀
