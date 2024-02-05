@@ -101,6 +101,13 @@ public record CommandHandler(SocketChannel socketChannel, byte[] receivedBytes) 
                                     GET (key) gets the key from the in-memory database. Returns "null" on non-existent key
                                     DEL (key) deletes the key from the in-memory database.
                                     
+                                    CMD (COMMAND) runs the COMMAND specified.
+                                    
+                                    The available COMMAND are:
+                                        - SAVE (filename) saves the in-memory database to the specified file.
+                                            The persistence handler appends .parquet to the end of the filename.
+                                        - SIZE returns the amount of key-value pairs in the in-memory database.
+                                        - RESET removes all key-value pairs from the in-memory database.
                                     """);
                         }
                     }
