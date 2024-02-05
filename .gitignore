@@ -6,3 +6,4 @@
 *.parquet
 !*testing.parquet
 .target/*
+target/*
