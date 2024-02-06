@@ -3,6 +3,8 @@ package integration.SariDBAndClient;
 import SariDB.db.SariDB;
 import client.SariDBClient;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -17,7 +19,7 @@ public class SariDBWithClientTest {
         private Socket socket;
         private SariDB sariDB;
 
-        ClientQueriesStandaloneSariDB() throws IOException {
+        ClientQueriesStandaloneSariDB() throws Exception {
             sariDB = SariDB
                     .builder()
                     .isEmbedded(false)
@@ -27,6 +29,7 @@ public class SariDBWithClientTest {
             sariDB.start();
             this.socket = new Socket("localhost", 5789);
             this.client = new SariDBClient(socket.getInputStream(), socket.getOutputStream());
+            Thread.sleep(1500);
         }
 
         @Test
