@@ -3,33 +3,34 @@ package integration.SariDBAndClient;
 import SariDB.db.SariDB;
 import client.SariDBClient;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import java.io.IOException;
 import java.net.Socket;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SariDBWithClientTest {
+    private static AtomicInteger count = new AtomicInteger(5759);
     @Nested
     @DisplayName("When a SariDB client connects to a standalone SariDB instance")
-    public class ClientQueriesStandaloneSariDB {
-        SariDBClient client;
-        private Socket socket;
-        private SariDB sariDB;
+    public class setup {
+        private static SariDBClient client;
+        private static Socket socket;
+        private static SariDB sariDB;
 
-        ClientQueriesStandaloneSariDB() throws Exception {
+        @BeforeAll
+        public static void setup() throws Exception {
+            int portNumber = count.getAndAdd(1);
             sariDB = SariDB
                     .builder()
                     .isEmbedded(false)
                     .reconstruct(false)
-                    .portNumber(5789)
+                    .portNumber(portNumber)
                     .build();
             sariDB.start();
-            this.socket = new Socket("localhost", 5789);
-            this.client = new SariDBClient(socket.getInputStream(), socket.getOutputStream());
-            Thread.sleep(1500);
+            Thread.sleep(2000); // Wait for server to start.
+            socket = new Socket("localhost", portNumber);
+            client = new SariDBClient(socket.getInputStream(), socket.getOutputStream());
         }
 
         @Test
