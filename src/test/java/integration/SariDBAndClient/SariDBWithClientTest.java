@@ -2,14 +2,12 @@ package integration.SariDBAndClient;
 
 import SariDB.db.SariDB;
 import client.SariDBClient;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
+import java.io.IOException;
 import java.net.Socket;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SariDBWithClientTest {
     @Nested
@@ -19,9 +17,7 @@ public class SariDBWithClientTest {
         private Socket socket;
         private SariDB sariDB;
 
-        @BeforeEach
-        @DisplayName("Sets up correctly")
-        public void setup() throws Exception {
+        ClientQueriesStandaloneSariDB() throws IOException {
             sariDB = SariDB
                     .builder()
                     .isEmbedded(false)
@@ -29,13 +25,14 @@ public class SariDBWithClientTest {
                     .portNumber(1338)
                     .build();
             sariDB.start();
-            Thread.sleep(100);
             this.socket = new Socket("localhost", 1338);
             this.client = new SariDBClient(socket.getInputStream(), socket.getOutputStream());
         }
+
         @Test
         @DisplayName("SET commands are registered correctly")
         public void shouldSetCorrectly() throws Exception {
+            assertFalse(sariDB.isEmbedded());
             String answer = client.sendSetRequest("one", "one");
             assertEquals("OK", answer);
         }
