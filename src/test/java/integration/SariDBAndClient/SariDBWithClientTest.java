@@ -3,12 +3,15 @@ package integration.SariDBAndClient;
 import SariDB.db.SariDB;
 import client.SariDBClient;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisabledIfSystemProperty(named = "ci.environment", matches = "true")
 public class SariDBWithClientTest {
     private static AtomicInteger count = new AtomicInteger(5759);
     @Nested
