@@ -21,11 +21,11 @@ jobs:
         java-version: '21'
         cache: 'maven'
 
-    - name: Run tests
-      run: ./mvnw test
-
     - name: Build with Maven
       run: ./mvnw clean install
+
+    - name: Run tests
+      run: ./mvnw test
 
     - name: Code vulnerability scanning
       uses: anchore/scan-action@v3

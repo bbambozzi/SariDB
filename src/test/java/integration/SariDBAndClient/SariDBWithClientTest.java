@@ -22,10 +22,10 @@ public class SariDBWithClientTest {
                     .builder()
                     .isEmbedded(false)
                     .reconstruct(false)
-                    .portNumber(1338)
+                    .portNumber(5789)
                     .build();
             sariDB.start();
-            this.socket = new Socket("localhost", 1338);
+            this.socket = new Socket("localhost", 5789);
             this.client = new SariDBClient(socket.getInputStream(), socket.getOutputStream());
         }
 
