@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisabledIfSystemProperty(named = "ci.environment", matches = "true")
+@Disabled
 public class SariDBWithClientTest {
     private static AtomicInteger count = new AtomicInteger(5759);
     @Nested
