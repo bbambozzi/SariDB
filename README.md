@@ -19,7 +19,8 @@ SariDB is a minimalist, file-reconstructible key-value database. It can be embed
 - **Concurrency First:** SariDB provides built-in concurrency safety mechanisms, allowing multiple threads to operate on the database simultaneously without compromising data consistency.
 
 ## Usage Example
-(Subject to change)
+
+### Embedded Example
 
 ```java
 SariDB sariDB = SariDB
@@ -28,12 +29,27 @@ SariDB sariDB = SariDB
                 .filePath("path/to/db.parquet") // Save your .parquet wherever!
                 .reconstruct(false) // Reconstruct or start anew?
                 .build(); // That's all folks.
-sariDB.start(); // 🚀
+
+sariDB.set("key", "someValue")
+sariDB.get("key") // returns "someValue"
+```
+
+### Standalone Example
+```java
+SariDB sariDB = SariDB
+                .builder()
+                .isEmbedded(true) // Embedded or standalone?
+                .filePath("path/to/db.parquet") // Save your .parquet wherever!
+                .reconstruct(false) // Reconstruct or start anew?
+                .portNumber(1337) // Set the port number..
+                .build(); // ..And that's all folks!
+sariDB.start(); // Listening on port 1337 🚀!
+
 ```
 
 
-## Add to your project (NOT YET IMPLEMENTED -- SOON!)
-## Downloads
+## Add to your project (NOT YET IMPLEMENTED)
+### Downloads
 
 [Download latest version (Not yet implemented)](https://google.com) or add to `pom.xml`:
 
